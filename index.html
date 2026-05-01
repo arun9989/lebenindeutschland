@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leben in Deutschland — Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f11;
+  --surface: #1a1a1f;
+  --surface2: #222228;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.14);
+  --text: #f0f0f0;
+  --muted: #888;
+  --accent: #d4a843;
+  --accent2: #e8c46a;
+  --green: #4ade80;
+  --green-bg: rgba(74,222,128,0.1);
+  --green-border: rgba(74,222,128,0.25);
+  --red: #f87171;
+  --blue: #60a5fa;
+  --tag-bg: rgba(212,168,67,0.12);
+  --tag-border: rgba(212,168,67,0.3);
+  --tag-text: #d4a843;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+  gap: 1rem;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  color: var(--accent);
+  white-space: nowrap;
+  letter-spacing: -0.02em;
+}
+.logo span { color: var(--text); font-weight: 500; }
+.header-right { display: flex; gap: 8px; align-items: center; }
+.mode-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.mode-btn.active, .mode-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+
+/* HERO */
+.hero {
+  padding: 2rem 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+}
+.hero h1 em { color: var(--accent); font-style: normal; }
+.hero p { color: var(--muted); font-size: 0.9rem; }
+.stats-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.25rem;
+  flex-wrap: wrap;
+}
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 16px;
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+}
+.stat-n {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.stat-l { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+
+/* CONTROLS */
+.controls {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.search-wrap { position: relative; }
+.search-wrap svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  width: 16px;
+  height: 16px;
+}
+#search {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+  padding: 10px 12px 10px 38px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+#search:focus { border-color: var(--accent); }
+#search::placeholder { color: var(--muted); }
+.cats {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+}
+.cats::-webkit-scrollbar { display: none; }
+.cat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.cat:hover { border-color: var(--border2); color: var(--text); }
+.cat.active { background: var(--tag-bg); border-color: var(--tag-border); color: var(--accent); }
+.results-info {
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding: 0 1.25rem 0.5rem;
+}
+
+/* QUESTION LIST */
+.q-list { padding: 0.75rem 1.25rem; display: flex; flex-direction: column; gap: 8px; }
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+.q-card:hover { border-color: var(--border2); }
+.q-card.open { border-color: var(--accent); }
+.q-card.answered-correct { border-color: var(--green-border); }
+.q-card.answered-wrong { border-color: rgba(248,113,113,0.3); }
+.q-top {
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.q-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent);
+  background: var(--tag-bg);
+  border: 1px solid var(--tag-border);
+  border-radius: 6px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.q-num.correct-badge { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.q-num.wrong-badge { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); color: var(--red); }
+.q-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--text);
+  flex: 1;
+}
+.q-arrow {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 3px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.q-card.open .q-arrow { transform: rotate(180deg); }
+.q-body { display: none; padding: 0 16px 14px; }
+.q-card.open .q-body { display: block; }
+.options { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.opt {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: var(--surface2);
+  color: var(--text);
+}
+.opt:hover:not(.revealed) { border-color: var(--border2); background: #2a2a32; }
+.opt-letter {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+.opt.correct { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.opt.correct .opt-letter { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.opt.wrong { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--red); }
+.opt.wrong .opt-letter { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); color: var(--red); }
+.opt.revealed-correct { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.opt.revealed-correct .opt-letter { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.correct-label {
+  font-size: 0.75rem;
+  color: var(--green);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+/* QUIZ MODE */
+.quiz-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+}
+.quiz-progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.quiz-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.quiz-score { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; }
+.quiz-score .s-correct { color: var(--green); }
+.quiz-score .s-wrong { color: var(--red); }
+.quiz-q {
+  padding: 1.5rem 1.25rem 1rem;
+}
+.quiz-num {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.quiz-question {
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+.quiz-opts { display: flex; flex-direction: column; gap: 8px; padding: 0 1.25rem 1.25rem; }
+.quiz-opt {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  text-align: left;
+  width: 100%;
+}
+.quiz-opt:hover:not(:disabled) { border-color: var(--border2); background: var(--surface2); }
+.quiz-opt:disabled { cursor: default; }
+.quiz-opt.selected-correct { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.quiz-opt.selected-wrong { background: rgba(248,113,113,0.08); border-color: rgba(248,113,113,0.25); color: var(--red); }
+.quiz-opt.reveal-correct { background: var(--green-bg); border-color: var(--green-border); color: var(--green); }
+.quiz-ol {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.quiz-feedback {
+  margin: 0 1.25rem 1rem;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  display: none;
+}
+.quiz-feedback.correct { background: var(--green-bg); border: 1px solid var(--green-border); color: var(--green); display: block; }
+.quiz-feedback.wrong { background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: #fca5a5; display: block; }
+.quiz-next {
+  display: none;
+  margin: 0 1.25rem 1.5rem;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  cursor: pointer;
+  width: calc(100% - 2.5rem);
+  transition: background 0.15s;
+}
+.quiz-next:hover { background: var(--accent2); }
+.quiz-next.visible { display: block; }
+
+/* RESULTS */
+.results {
+  padding: 2rem 1.25rem;
+  text-align: center;
+  display: none;
+}
+.results.show { display: block; }
+.results-icon { font-size: 3rem; margin-bottom: 1rem; }
+.results h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+}
+.results p { color: var(--muted); margin-bottom: 1.5rem; }
+.results-score {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+.results-detail { color: var(--muted); font-size: 0.85rem; margin-bottom: 2rem; }
+.results-actions { display: flex; flex-direction: column; gap: 10px; }
+.btn-primary {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent2); }
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.pass-tag {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: 'Syne', sans-serif;
+  margin-bottom: 1rem;
+}
+.pass-tag.pass { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.pass-tag.fail { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-btn {
+  flex: 1;
+  padding: 12px 8px;
+  text-align: center;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  transition: color 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.nav-btn svg { width: 20px; height: 20px; }
+.nav-btn.active { color: var(--accent); }
+.nav-btn span { line-height: 1; }
+
+/* PAGES */
+.page { display: none; padding-bottom: 80px; }
+.page.active { display: block; }
+
+/* PROGRESS PAGE */
+.progress-page { padding: 1.5rem 1.25rem 80px; }
+.progress-page h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.prog-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 10px;
+}
+.prog-cat {
+  font-weight: 500;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+.prog-bar {
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.prog-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.prog-nums {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.big-score-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+.big-score-card .num {
+  font-family: 'Syne', sans-serif;
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1;
+}
+.big-score-card .sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+.reset-btn {
+  width: 100%;
+  background: none;
+  border: 1px solid rgba(248,113,113,0.3);
+  color: var(--red);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.85rem;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: all 0.15s;
+}
+.reset-btn:hover { background: rgba(248,113,113,0.08); }
+
+/* UTIL */
+.hidden { display: none !important; }
+.empty { text-align: center; color: var(--muted); padding: 3rem 1.25rem; font-size: 0.9rem; }
+
+/* QUIZ START */
+.quiz-start { padding: 1.5rem 1.25rem 80px; }
+.quiz-start h2 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 0.5rem; }
+.quiz-start p { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; }
+.quiz-options-grid { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.quiz-option-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.quiz-option-card:hover { border-color: var(--border2); }
+.quiz-option-card.selected { border-color: var(--accent); background: var(--tag-bg); }
+.quiz-option-card .qoc-title { font-weight: 500; font-size: 0.9rem; }
+.quiz-option-card .qoc-count { font-size: 0.78rem; color: var(--muted); }
+.quiz-size-row { display: flex; gap: 8px; margin-bottom: 1.5rem; }
+.size-btn {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+}
+.size-btn:hover { border-color: var(--border2); }
+.size-btn.selected { border-color: var(--accent); background: var(--tag-bg); color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">LiD <span>Einbürgerungstest</span></div>
+  <div class="header-right">
+    <button class="mode-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="mode-btn" id="btn-de" onclick="setLang('de')">DE</button>
+  </div>
+</header>
+
+<!-- STUDY PAGE -->
+<div class="page active" id="page-study">
+  <div class="hero">
+    <h1>Learn all <em>310</em><br>questions & answers</h1>
+    <p>Tap any question to reveal the correct answer</p>
+    <div class="stats-row">
+      <div class="stat"><div class="stat-n">310</div><div class="stat-l">Questions</div></div>
+      <div class="stat"><div class="stat-n">33</div><div class="stat-l">In real test</div></div>
+      <div class="stat"><div class="stat-n">17</div><div class="stat-l">To pass</div></div>
+      <div class="stat"><div class="stat-n">€25</div><div class="stat-l">Test fee</div></div>
+    </div>
+  </div>
+  <div class="controls">
+    <div class="search-wrap">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <input type="text" id="search" placeholder="Search questions..." oninput="doSearch(this.value)">
+    </div>
+    <div class="cats" id="cats"></div>
+  </div>
+  <div class="results-info" id="results-info"></div>
+  <div class="q-list" id="q-list"></div>
+  <div class="empty hidden" id="empty">No questions found. Try a different search.</div>
+</div>
+
+<!-- QUIZ SETUP PAGE -->
+<div class="page" id="page-quiz-setup">
+  <div class="quiz-start">
+    <h2>Quiz yourself</h2>
+    <p>Choose a category and number of questions</p>
+    <div class="quiz-options-grid" id="quiz-cat-options"></div>
+    <p style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Number of questions</p>
+    <div class="quiz-size-row" id="quiz-size-row">
+      <button class="size-btn selected" onclick="selectSize(10)">10</button>
+      <button class="size-btn" onclick="selectSize(20)">20</button>
+      <button class="size-btn" onclick="selectSize(33)">33 (real test)</button>
+      <button class="size-btn" onclick="selectSize(0)">All</button>
+    </div>
+    <button class="btn-primary" style="width:100%" onclick="startQuiz()">Start quiz →</button>
+  </div>
+</div>
+
+<!-- QUIZ ACTIVE PAGE -->
+<div class="page" id="page-quiz">
+  <div class="quiz-header">
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-prog-fill"></div></div>
+    <div class="quiz-meta">
+      <span id="q-meta-left">Question 1 of 33</span>
+      <span class="quiz-score"><span class="s-correct" id="q-score-c">0</span> / <span class="s-wrong" id="q-score-w">0</span></span>
+    </div>
+  </div>
+  <div class="quiz-q">
+    <div class="quiz-num" id="q-cat-label"></div>
+    <div class="quiz-question" id="q-question"></div>
+  </div>
+  <div class="quiz-opts" id="q-opts"></div>
+  <div class="quiz-feedback" id="q-feedback"></div>
+  <button class="quiz-next" id="q-next" onclick="nextQuestion()">Next question →</button>
+  <div class="results" id="q-results">
+    <div class="results-icon" id="r-icon"></div>
+    <div class="results-score" id="r-score"></div>
+    <div class="results-detail" id="r-detail"></div>
+    <div class="pass-tag" id="r-pass"></div>
+    <p id="r-msg" style="margin-bottom:1.5rem"></p>
+    <div class="results-actions">
+      <button class="btn-primary" onclick="retryQuiz()">Try again</button>
+      <button class="btn-secondary" onclick="goPage('quiz-setup')">Choose different category</button>
+      <button class="btn-secondary" onclick="goPage('study')">Back to study</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRESS PAGE -->
+<div class="page" id="page-progress">
+  <div class="progress-page">
+    <h2>Your progress</h2>
+    <div class="big-score-card">
+      <div class="num" id="prog-pct">0%</div>
+      <div class="sub" id="prog-sub">questions seen correctly</div>
+    </div>
+    <div id="prog-cats"></div>
+    <button class="reset-btn" onclick="resetProgress()">Reset all progress</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" onclick="goPage('study')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+    <span>Study</span>
+  </button>
+  <button class="nav-btn" onclick="goPage('quiz-setup')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+    <span>Quiz</span>
+  </button>
+  <button class="nav-btn" onclick="goPage('progress')">
+    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+    <span>Progress</span>
+  </button>
+</nav>
+
+<script>
+const CATEGORIES = {
+  history: { en: 'History', de: 'Geschichte', color: '#d4a843' },
+  constitution: { en: 'Constitution & Religion', de: 'Verfassung & Religion', color: '#60a5fa' },
+  germany: { en: 'Germany', de: 'Deutschland', color: '#4ade80' },
+  politics: { en: 'Political system', de: 'Politisches System', color: '#c084fc' },
+  judiciary: { en: 'Judiciary & Work', de: 'Recht & Arbeit', color: '#fb923c' },
+  education: { en: 'Education & EU', de: 'Bildung & EU', color: '#f472b6' },
+  nrw: { en: 'NRW State', de: 'NRW (Bundesland)', color: '#34d399' }
+};
+
+const QS = [
+  {n:1,cat:'history',en:{q:'What happened on May 8, 1945?',opts:['End of WWII in Europe','Death of Adolf Hitler','Election of Konrad Adenauer as Chancellor','Start of Berlin Wall construction'],a:0},de:{q:'Was war am 8. Mai 1945?',opts:['Ende des Zweiten Weltkriegs in Europa','Tod Adolf Hitlers','Wahl von Konrad Adenauer zum Bundeskanzler','Beginn des Berliner Mauerbaus'],a:0}},
+  {n:2,cat:'history',en:{q:'What existed during National Socialism in Germany?',opts:['Right to free personal development','Protection of human dignity','Ban on political parties','Freedom of the press'],a:2},de:{q:'Was gab es während der Zeit des Nationalsozialismus in Deutschland?',opts:['das Recht zur freien Entfaltung der Persönlichkeit','den Schutz der Menschenwürde','das Verbot von Parteien','Pressefreiheit'],a:2}},
+  {n:3,cat:'history',en:{q:'What was the name of the first Federal Chancellor of Germany?',opts:['Willy Brandt','Konrad Adenauer','Kurt Georg Kiesinger','Helmut Schmidt'],a:1},de:{q:'Wie hieß der erste Bundeskanzler der Bundesrepublik Deutschland?',opts:['Willy Brandt','Konrad Adenauer','Kurt Georg Kiesinger','Helmut Schmidt'],a:1}},
+  {n:4,cat:'history',en:{q:'How did WWII officially end in Europe?',opts:['Through a revolution in Germany','With German withdrawal from occupied territories','With the death of Adolf Hitler','Through Germany\'s unconditional surrender'],a:3},de:{q:'Wie endete der Zweite Weltkrieg in Europa offiziell?',opts:['durch eine Revolution in Deutschland','mit dem Rückzug der Deutschen aus den besetzten Gebieten','mit dem Tod Adolf Hitlers','durch die bedingungslose Kapitulation Deutschlands'],a:3}},
+  {n:5,cat:'history',en:{q:'In which year did Hitler become Reich Chancellor?',opts:['1923','1927','1933','1936'],a:2},de:{q:'In welchem Jahr wurde Hitler Reichskanzler?',opts:['1923','1927','1933','1936'],a:2}},
+  {n:6,cat:'history',en:{q:'When were the National Socialists under Hitler in power?',opts:['1945–1989','1933–1945','1932–1950','1918–1923'],a:1},de:{q:'Wann waren die Nationalsozialisten mit Adolf Hitler in Deutschland an der Macht?',opts:['1945 bis 1989','1933 bis 1945','1932 bis 1950','1918 bis 1923'],a:1}},
+  {n:7,cat:'history',en:{q:'The "Third Reich" was a …',opts:['Soviet republic','Monarchy','Dictatorship','Democracy'],a:2},de:{q:'Das "Dritte Reich" war eine …',opts:['Räterepublik','Monarchie','Diktatur','Demokratie'],a:2}},
+  {n:8,cat:'history',en:{q:'Which war lasted from 1939 to 1945?',opts:['The Gulf War','World War I','World War II','The Vietnam War'],a:2},de:{q:'Welcher Krieg dauerte von 1939 bis 1945?',opts:['der Golfkrieg','der Erste Weltkrieg','der Zweite Weltkrieg','der Vietnamkrieg'],a:2}},
+  {n:9,cat:'history',en:{q:'In which year did Nazis destroy synagogues and Jewish businesses in Germany?',opts:['1925','1930','1938','1945'],a:2},de:{q:'In welchem Jahr zerstörten die Nationalsozialisten Synagogen und jüdische Geschäfte?',opts:['1925','1930','1938','1945'],a:2}},
+  {n:10,cat:'history',en:{q:'What happened on November 9, 1938 in Germany?',opts:['Nazis lost an election and dissolved the Reichstag','Jewish businesses and synagogues were destroyed by Nazis','Attack on Poland began WWII','Hitler became Reich President and banned all parties'],a:1},de:{q:'Was passierte am 9. November 1938 in Deutschland?',opts:['Die Nationalsozialisten verlieren eine Wahl und lösen den Reichstag auf','Jüdische Geschäfte und Synagogen werden durch Nationalsozialisten zerstört','Mit dem Angriff auf Polen beginnt der Zweite Weltkrieg','Hitler wird Reichspräsident und lässt alle Parteien verbieten'],a:1}},
+  {n:11,cat:'history',en:{q:'When were the National Socialists in power in Germany?',opts:['1888–1918','1921–1934','1933–1945','1949–1963'],a:2},de:{q:'Wann waren die Nationalsozialisten in Deutschland an der Macht?',opts:['1888 bis 1918','1921 bis 1934','1933 bis 1945','1949 bis 1963'],a:2}},
+  {n:12,cat:'history',en:{q:'Claus Schenk Graf von Stauffenberg became known for …',opts:['The assassination attempt on Hitler on July 20, 1944','Building up the Wehrmacht','A gold medal at the 1936 Olympic Games','Building the Reichstag'],a:0},de:{q:'Claus Schenk Graf von Stauffenberg wurde bekannt durch …',opts:['das Attentat auf Hitler am 20. Juli 1944','den Aufbau der Wehrmacht','eine Goldmedaille bei den Olympischen Spielen 1936','den Bau des Reichstagsgebäudes'],a:0}},
+  {n:13,cat:'history',en:{q:'When did World War II end?',opts:['1945','1961','1949','1933'],a:0},de:{q:'Wann war der Zweite Weltkrieg zu Ende?',opts:['1945','1961','1949','1933'],a:0}},
+  {n:14,cat:'history',en:{q:'What characterized the Nazi state?',opts:['General religious freedom','Development of democracy','Freedom of expression','State racism'],a:3},de:{q:'Was kennzeichnete den NS-Staat?',opts:['der allgemeinen Religionsfreiheit','der Entwicklung der Demokratie','der Meinungsfreiheit','des staatlichen Rassismus'],a:3}},
+  {n:15,cat:'history',en:{q:'What did NOT exist in Germany during National Socialism?',opts:['Persecution of Jews','Free elections','Press censorship','Arbitrary arrests'],a:1},de:{q:'Was gab es in Deutschland nicht während der Zeit des Nationalsozialismus?',opts:['Verfolgung der Juden','freie Wahlen','Pressezensur','willkürliche Verhaftungen'],a:1}},
+  {n:16,cat:'history',en:{q:'The National Socialists established in 1933 in Germany …',opts:['A principality','A democratic state','A dictatorship','A monarchy'],a:2},de:{q:'Die Nationalsozialisten mit Adolf Hitler errichteten 1933 in Deutschland …',opts:['ein Fürstentum','einen demokratischen Staat','eine Diktatur','eine Monarchie'],a:2}},
+  {n:17,cat:'history',en:{q:'Who built the Wall in Berlin?',opts:['The GDR (East Germany)','The USA','Great Britain','West Germany'],a:0},de:{q:'Wer baute die Mauer in Berlin?',opts:['die DDR','die USA','Großbritannien','die Bundesrepublik Deutschland'],a:0}},
+  {n:18,cat:'history',en:{q:'During which demonstrations did people chant "We are the people"?',opts:['1968 demonstrations in West Germany','Monday demonstrations 1989 in the GDR','Workers uprising 1953 in the GDR','Anti-nuclear demonstrations 1985'],a:1},de:{q:'Bei welchen Demonstrationen riefen die Menschen "Wir sind das Volk"?',opts:['bei den Demonstrationen 1968 in der Bundesrepublik Deutschland','bei den Montagsdemonstrationen 1989 in der DDR','beim Arbeiteraufstand 1953 in der DDR','bei den Anti-Atomkraft-Demonstrationen 1985'],a:1}},
+  {n:19,cat:'history',en:{q:'Which countries were the "Allied Occupying Powers" in Germany after WWII?',opts:['France, Soviet Union, Italy, Japan','USA, Soviet Union, Spain, Portugal','USA, Soviet Union, Great Britain, France','Soviet Union, Great Britain, Poland, Sweden'],a:2},de:{q:'Welche Länder wurden nach dem Zweiten Weltkrieg als "Alliierte Besatzungsmächte" bezeichnet?',opts:['Frankreich, Sowjetunion, Italien, Japan','USA, Sowjetunion, Spanien, Portugal','USA, Sowjetunion, Großbritannien, Frankreich','Sowjetunion, Großbritannien, Polen, Schweden'],a:2}},
+  {n:20,cat:'history',en:{q:'Which country was NOT an "Allied Occupying Power" in Germany?',opts:['Soviet Union','Japan','USA','France'],a:1},de:{q:'Welches Land war keine "Alliierte Besatzungsmacht" in Deutschland?',opts:['Sowjetunion','Japan','USA','Frankreich'],a:1}},
+  {n:21,cat:'history',en:{q:'When was the Federal Republic of Germany founded?',opts:['1939','1945','1949','1951'],a:2},de:{q:'Wann wurde die Bundesrepublik Deutschland gegründet?',opts:['1939','1945','1949','1951'],a:2}},
+  {n:22,cat:'history',en:{q:'In which occupation zone was the GDR founded?',opts:['The Soviet occupation zone','The French occupation zone','The American occupation zone','The British occupation zone'],a:0},de:{q:'In welcher Besatzungszone wurde die DDR gegründet?',opts:['sowjetischen Besatzungszone','französischen Besatzungszone','amerikanischen Besatzungszone','britischen Besatzungszone'],a:0}},
+  {n:23,cat:'history',en:{q:'When was the GDR founded?',opts:['1947','1949','1953','1956'],a:1},de:{q:'Wann wurde die DDR gegründet?',opts:['1947','1949','1953','1956'],a:1}},
+  {n:24,cat:'history',en:{q:'How many occupation zones were there in Germany after WWII?',opts:['3','4','5','6'],a:1},de:{q:'Wie viele Besatzungszonen gab es in Deutschland nach dem Zweiten Weltkrieg?',opts:['3','4','5','6'],a:1}},
+  {n:25,cat:'history',en:{q:'Which German city was divided into four sectors after WWII?',opts:['Dresden','Munich','Frankfurt/Oder','Berlin'],a:3},de:{q:'Welche deutsche Stadt wurde nach dem Zweiten Weltkrieg in vier Sektoren aufgeteilt?',opts:['Dresden','München','Frankfurt/Oder','Berlin'],a:3}},
+  {n:26,cat:'history',en:{q:'When did the Berlin Wall fall?',opts:['1979','1985','1989','1991'],a:2},de:{q:'Wann fiel die Berliner Mauer?',opts:['1979','1985','1989','1991'],a:2}},
+  {n:27,cat:'history',en:{q:'What happened on October 3, 1990?',opts:['First free elections in East Germany','German reunification','Fall of the Berlin Wall','Signing of the Basic Law'],a:1},de:{q:'Was passierte am 3. Oktober 1990?',opts:['Die ersten freien Wahlen in Ostdeutschland','Die Wiedervereinigung Deutschlands','Der Fall der Berliner Mauer','Die Unterzeichnung des Grundgesetzes'],a:1}},
+  {n:28,cat:'history',en:{q:'The first Federal Chancellor of Germany was …',opts:['Konrad Adenauer','Willy Brandt','Ludwig Erhard','Gerhard Schröder'],a:0},de:{q:'Der erste Bundeskanzler der Bundesrepublik Deutschland war …',opts:['Konrad Adenauer','Willy Brandt','Ludwig Erhard','Gerhard Schröder'],a:0}},
+  {n:29,cat:'history',en:{q:'What did Willy Brandt express with his kneeling gesture in Warsaw in 1970?',opts:['He said a prayer at the Tomb of the Unknown Soldier','He showed humility before the Warsaw Pact','He submitted to the former Allies','He asked Poland and Polish Jews for forgiveness'],a:3},de:{q:'Was wollte Willy Brandt mit seinem Kniefall 1970 in Warschau ausdrücken?',opts:['Er sprach ein Gebet am Grab des Unbekannten Soldaten','Er zeigte seine Demut vor dem Warschauer Pakt','Er hat sich den ehemaligen Alliierten unterworfen','Er bat Polen und die polnischen Juden um Vergebung'],a:3}},
+  {n:30,cat:'history',en:{q:'When was the "Economic Miracle" (Wirtschaftswunder) in West Germany?',opts:['1980s','1970s','1950s','1940s'],a:2},de:{q:'Wann war in der Bundesrepublik Deutschland das "Wirtschaftswunder"?',opts:['80er Jahre','70er Jahre','50er Jahre','40er Jahre'],a:2}},
+  {n:31,cat:'history',en:{q:'What do "Stolpersteine" (stumbling stones) in Germany commemorate?',opts:['Famous German politicians','Traffic fatalities','Well-known Jewish musicians','Victims of National Socialism'],a:3},de:{q:'Woran erinnern die "Stolpersteine" in Deutschland?',opts:['an berühmte deutsche Politikerinnen und Politiker','an Verkehrstote','an bekannte jüdische Musiker','an die Opfer des Nationalsozialismus'],a:3}},
+  {n:32,cat:'history',en:{q:'What did the term "Iron Curtain" stand for?',opts:['Nazi Germany against the Allies','Europe against the USA','Northern against Southern Germany','The Warsaw Pact against the West'],a:3},de:{q:'Wofür stand der Ausdruck "Eiserner Vorhang"?',opts:['Abschottung Nazi-Deutschlands gegen die Alliierten','Europas gegen die USA','Norddeutschlands gegen Süddeutschland','des Warschauer Pakts gegen den Westen'],a:3}},
+  {n:33,cat:'history',en:{q:'When was the Basic Law (Grundgesetz) of Germany adopted?',opts:['1945','1947','1949','1951'],a:2},de:{q:'Wann wurde das Grundgesetz der Bundesrepublik Deutschland angenommen?',opts:['1945','1947','1949','1951'],a:2}},
+  {n:34,cat:'history',en:{q:'Which city was the first capital of the Federal Republic of Germany?',opts:['Frankfurt','Berlin','Hamburg','Bonn'],a:3},de:{q:'Welche Stadt war die erste Hauptstadt der Bundesrepublik Deutschland?',opts:['Frankfurt','Berlin','Hamburg','Bonn'],a:3}},
+  {n:35,cat:'history',en:{q:'Which German state had a black-red-gold flag with hammer, compass and wreath of grain?',opts:['GDR (East Germany)','Third Reich','Prussia','Federal Republic of Germany'],a:0},de:{q:'Welcher deutsche Staat hatte eine schwarz-rot-goldene Flagge mit Hammer, Zirkel und Ährenkranz?',opts:['DDR','Drittes Reich','Preußen','Bundesrepublik Deutschland'],a:0}},
+  {n:36,cat:'history',en:{q:'What is the significance of June 17 in German history?',opts:['Fall of the Berlin Wall','German Unity Day','Workers uprising in GDR in 1953','Liberation Day'],a:2},de:{q:'Was ist die Bedeutung des 17. Juni in der deutschen Geschichte?',opts:['Fall der Berliner Mauer','Tag der deutschen Einheit','Arbeiteraufstand in der DDR 1953','Befreiungstag'],a:2}},
+  {n:37,cat:'history',en:{q:'Who was the first Federal President of Germany?',opts:['Konrad Adenauer','Theodor Heuss','Walter Scheel','Richard von Weizsäcker'],a:1},de:{q:'Wer war der erste Bundespräsident der Bundesrepublik Deutschland?',opts:['Konrad Adenauer','Theodor Heuss','Walter Scheel','Richard von Weizsäcker'],a:1}},
+  {n:38,cat:'history',en:{q:'What was the Stasi?',opts:['East Germany\'s secret police','A West German TV channel','A political party','A trade union'],a:0},de:{q:'Was war die Stasi?',opts:['Der Geheimdienst der DDR','Ein westdeutscher TV-Sender','Eine politische Partei','Eine Gewerkschaft'],a:0}},
+  {n:39,cat:'history',en:{q:'Which German Chancellor received the Nobel Peace Prize?',opts:['Konrad Adenauer','Helmut Kohl','Willy Brandt','Gerhard Schröder'],a:2},de:{q:'Welcher deutsche Bundeskanzler erhielt den Friedensnobelpreis?',opts:['Konrad Adenauer','Helmut Kohl','Willy Brandt','Gerhard Schröder'],a:2}},
+  {n:40,cat:'history',en:{q:'Who was Helmut Kohl?',opts:['First chancellor of East Germany','Chancellor during German reunification','First president of Germany','Chancellor of the Weimar Republic'],a:1},de:{q:'Wer war Helmut Kohl?',opts:['Erster Kanzler der DDR','Bundeskanzler während der Wiedervereinigung','Erster Bundespräsident Deutschlands','Kanzler der Weimarer Republik'],a:1}},
+  {n:41,cat:'history',en:{q:'What was the Weimar Republic?',opts:['Germany\'s first democracy','A monarchy in eastern Germany','A dictatorship after WWI','A city-state'],a:0},de:{q:'Was war die Weimarer Republik?',opts:['Deutschlands erste Demokratie','Eine Monarchie in Ostdeutschland','Eine Diktatur nach dem Ersten Weltkrieg','Ein Stadtstaat'],a:0}},
+  {n:42,cat:'history',en:{q:'When was the Weimar Republic in Germany?',opts:['1871–1918','1918–1933','1933–1945','1945–1949'],a:1},de:{q:'Wann war die Weimarer Republik in Deutschland?',opts:['1871–1918','1918–1933','1933–1945','1945–1949'],a:1}},
+  {n:43,cat:'history',en:{q:'When did Germany join NATO?',opts:['1949','1952','1955','1960'],a:2},de:{q:'In welchem Jahr trat Deutschland der NATO bei?',opts:['1949','1952','1955','1960'],a:2}},
+  {n:44,cat:'history',en:{q:'When was the Euro introduced as physical currency in Germany?',opts:['1999','2001','2002','2004'],a:2},de:{q:'Wann wurde der Euro als Bargeld in Deutschland eingeführt?',opts:['1999','2001','2002','2004'],a:2}},
+  {n:45,cat:'history',en:{q:'What is the significance of May 23 in Germany?',opts:['German Unity Day','Constitution Day (Basic Law anniversary)','Liberation Day','Armistice Day'],a:1},de:{q:'Was ist die Bedeutung des 23. Mai in Deutschland?',opts:['Tag der deutschen Einheit','Verfassungstag (Jahrestag des Grundgesetzes)','Befreiungstag','Waffenstillstandstag'],a:1}},
+  {n:46,cat:'history',en:{q:'What happened at the Nuremberg Trials?',opts:['Germany was divided into zones','Nazi war criminals were prosecuted','A peace treaty was signed','Germany joined NATO'],a:1},de:{q:'Was geschah bei den Nürnberger Prozessen?',opts:['Deutschland wurde in Zonen aufgeteilt','NS-Kriegsverbrecher wurden angeklagt','Ein Friedensvertrag wurde unterzeichnet','Deutschland trat der NATO bei'],a:1}},
+  {n:47,cat:'history',en:{q:'What was the Marshall Plan?',opts:['A German military strategy','A US economic aid program for Europe after WWII','A plan to divide Germany','A peace treaty'],a:1},de:{q:'Was war der Marshallplan?',opts:['Eine deutsche Militärstrategie','Ein US-Wirtschaftshilfeprogramm für Europa nach dem Zweiten Weltkrieg','Ein Plan zur Teilung Deutschlands','Ein Friedensvertrag'],a:1}},
+  {n:48,cat:'history',en:{q:'From June 1948 to May 1949, West Berlin was supplied by an airlift. Why?',opts:['Britain found air supply faster','France found air supply cheaper','The Soviet Union blocked all land transport','US soldiers feared attacks on land routes'],a:2},de:{q:'Vom Juni 1948 bis Mai 1949 wurden Bürger von West-Berlin durch eine Luftbrücke versorgt. Warum?',opts:['Für Großbritannien war die Versorgung über die Luftbrücke schneller','Für Frankreich war eine Versorgung mit dem Flugzeug kostengünstiger','Die Sowjetunion unterbrach den gesamten Verkehr auf dem Landwege','Die amerikanischen Soldaten hatten beim Landtransport Angst vor Überfällen'],a:2}},
+  {n:49,cat:'history',en:{q:'What is the "Volksbegehren/Volksentscheid" tradition? (Referendum in German states)',opts:['A federal election process','Citizens\' initiative process to propose or vote on legislation at state level','A party congress system','A court appeal system'],a:1},de:{q:'Welcher deutsche Staat hatte nach 1945 eine schwarz-rot-goldene Flagge ohne Wappen?',opts:['Bundesrepublik Deutschland','DDR','Weimarer Republik','Preußen'],a:0}},
+  {n:50,cat:'history',en:{q:'Before how many years did the first Jewish community exist on the territory of present-day Germany?',opts:['About 300 years','About 700 years','About 1,150 years','About 1,700 years'],a:3},de:{q:'Vor wie vielen Jahren gab es erstmals eine jüdische Gemeinde auf dem Gebiet des heutigen Deutschlands?',opts:['vor etwa 300 Jahren','vor etwa 700 Jahren','vor etwa 1150 Jahren','vor etwa 1700 Jahren'],a:3}},
+  {n:51,cat:'constitution',en:{q:'What is protected by the first article of the Basic Law?',opts:['Freedom of speech','Human dignity','The right to vote','Freedom of religion'],a:1},de:{q:'Was schützt der erste Artikel des Grundgesetzes?',opts:['Meinungsfreiheit','Die Menschenwürde','Das Wahlrecht','Religionsfreiheit'],a:1}},
+  {n:52,cat:'constitution',en:{q:'What are the colors of the German flag?',opts:['Red, white, blue','Black, red, gold','Green, white, red','Blue, white, red'],a:1},de:{q:'Welche Farben hat die deutsche Flagge?',opts:['Rot, Weiß, Blau','Schwarz, Rot, Gold','Grün, Weiß, Rot','Blau, Weiß, Rot'],a:1}},
+  {n:53,cat:'constitution',en:{q:'What is the national holiday of Germany?',opts:['May 23','October 3 (German Unity Day)','November 9','January 1'],a:1},de:{q:'Was ist der Nationalfeiertag Deutschlands?',opts:['23. Mai','3. Oktober (Tag der deutschen Einheit)','9. November','1. Januar'],a:1}},
+  {n:54,cat:'constitution',en:{q:'What does freedom of religion mean in Germany?',opts:['Everyone must follow one religion','Everyone can freely choose or not choose a religion','Only Christianity is allowed','Religion is banned in public'],a:1},de:{q:'Was bedeutet Religionsfreiheit in Deutschland?',opts:['Jeder muss einer Religion folgen','Jeder kann frei eine Religion wählen oder keine','Nur das Christentum ist erlaubt','Religion ist in der Öffentlichkeit verboten'],a:1}},
+  {n:55,cat:'constitution',en:{q:'What are "Grundrechte" (basic rights)?',opts:['Basic employment rights','Fundamental civil rights guaranteed by the Basic Law','Minimum wage regulations','Basic tax rights'],a:1},de:{q:'Was sind "Grundrechte"?',opts:['Grundlegende Arbeitsrechte','Im Grundgesetz garantierte Bürgerrechte','Mindestlohnregelungen','Steuerrechte'],a:1}},
+  {n:56,cat:'constitution',en:{q:'What does the principle of the rule of law mean?',opts:['The state can make any law','Everyone including the state is subject to the law','Only courts make laws','The president is above the law'],a:1},de:{q:'Was bedeutet das Rechtsstaatsprinzip?',opts:['Der Staat kann beliebige Gesetze erlassen','Alle, auch der Staat, sind an das Recht gebunden','Nur Gerichte machen Gesetze','Der Präsident steht über dem Recht'],a:1}},
+  {n:57,cat:'constitution',en:{q:'What does the federalism principle mean in Germany?',opts:['One central government controls everything','Power is shared between the federal government and the 16 states','Each city governs itself','Only big states have power'],a:1},de:{q:'Was bedeutet das Föderalismusprinzip in Deutschland?',opts:['Eine Zentralregierung kontrolliert alles','Macht wird zwischen Bund und 16 Ländern geteilt','Jede Stadt regiert sich selbst','Nur große Länder haben Macht'],a:1}},
+  {n:58,cat:'constitution',en:{q:'What is the German national anthem called?',opts:['Das Lied der Deutschen','Deutschlandlied','Einigkeit und Recht und Freiheit','The Ode to Germany'],a:1},de:{q:'Wie heißt die deutsche Nationalhymne?',opts:['Das Lied der Deutschen','Deutschlandlied','Einigkeit und Recht und Freiheit','Die Ode an Deutschland'],a:1}},
+  {n:59,cat:'constitution',en:{q:'What does "Einigkeit und Recht und Freiheit" mean?',opts:['Peace, love, happiness','Unity, justice and freedom','Power, order and law','Faith, hope and charity'],a:1},de:{q:'Was bedeutet "Einigkeit und Recht und Freiheit"?',opts:['Frieden, Liebe, Glück','Einigkeit, Gerechtigkeit und Freiheit','Macht, Ordnung und Recht','Glaube, Hoffnung und Nächstenliebe'],a:1}},
+  {n:60,cat:'constitution',en:{q:'What is the coat of arms (Wappen) of Germany?',opts:['A lion','An eagle','A bear','A horse'],a:1},de:{q:'Was ist das Wappen Deutschlands?',opts:['Ein Löwe','Ein Adler','Ein Bär','Ein Pferd'],a:1}},
+  {n:61,cat:'constitution',en:{q:'Which stanza of the Deutschlandlied is used as the national anthem?',opts:['First stanza','Second stanza','Third stanza','All three stanzas'],a:2},de:{q:'Welche Strophe des Deutschlandlieds ist die Nationalhymne?',opts:['Erste Strophe','Zweite Strophe','Dritte Strophe','Alle drei Strophen'],a:2}},
+  {n:62,cat:'constitution',en:{q:'Which religion has the most followers in Germany?',opts:['Islam','Judaism','Christianity','Buddhism'],a:2},de:{q:'Welche Religion hat in Deutschland die meisten Anhänger?',opts:['Islam','Judentum','Christentum','Buddhismus'],a:2}},
+  {n:63,cat:'constitution',en:{q:'What is a church tax (Kirchensteuer) in Germany?',opts:['A tax everyone must pay','A tax paid by registered church members','A tax on church buildings','A donation to charity'],a:1},de:{q:'Was ist die Kirchensteuer in Deutschland?',opts:['Eine Steuer, die alle zahlen müssen','Eine Steuer, die Kirchenmitglieder zahlen','Eine Steuer auf Kirchengebäude','Eine Spende an Wohltätigkeitsorganisationen'],a:1}},
+  {n:64,cat:'constitution',en:{q:'What does Article 1 of the Basic Law state?',opts:['Germany is a republic','Human dignity is inviolable','All people are equal','Freedom of religion is guaranteed'],a:1},de:{q:'Was sagt Artikel 1 des Grundgesetzes?',opts:['Deutschland ist eine Republik','Die Menschenwürde ist unantastbar','Alle Menschen sind gleich','Religionsfreiheit ist garantiert'],a:1}},
+  {n:65,cat:'constitution',en:{q:'Which of these is NOT a legal public holiday in Germany?',opts:['Christmas Day','Easter Monday','Carnival Monday (Rosenmontag)','Ascension Day'],a:2},de:{q:'Welcher dieser Tage ist KEIN gesetzlicher Feiertag in Deutschland?',opts:['Weihnachtstag','Ostermontag','Rosenmontag','Christi Himmelfahrt'],a:2}},
+  {n:66,cat:'constitution',en:{q:'What is the "eternity clause" (Ewigkeitsklausel) in the Basic Law?',opts:['Article 1','Article 20','Article 79 (certain articles cannot be changed)','Article 100'],a:2},de:{q:'Was ist die "Ewigkeitsklausel" im Grundgesetz?',opts:['Artikel 1','Artikel 20','Artikel 79 (bestimmte Artikel können nicht geändert werden)','Artikel 100'],a:2}},
+  {n:67,cat:'constitution',en:{q:'What is the welfare state principle (Sozialstaatsprinzip)?',opts:['The state provides everything for free','The state must ensure social justice and support for those in need','Only the rich pay taxes','Religion guides social policy'],a:1},de:{q:'Was ist das Sozialstaatsprinzip?',opts:['Der Staat stellt alles kostenlos bereit','Der Staat muss soziale Gerechtigkeit und Unterstützung für Bedürftige sicherstellen','Nur Reiche zahlen Steuern','Religion leitet die Sozialpolitik'],a:1}},
+  {n:68,cat:'constitution',en:{q:'What is "Verfassungsschutz" (Office for Protection of the Constitution)?',opts:['A construction authority','A domestic intelligence agency protecting the democratic order','A tax authority','A constitutional court'],a:1},de:{q:'Was ist der Verfassungsschutz?',opts:['Eine Baubehörde','Ein Inlandsgeheimdienst zum Schutz der demokratischen Ordnung','Eine Steuerbehörde','Ein Verfassungsgericht'],a:1}},
+  {n:69,cat:'constitution',en:{q:'What is the right to asylum (Asylrecht) in Germany?',opts:['Anyone can move to Germany freely','Politically persecuted people have the right to apply for asylum','Asylum seekers get automatic citizenship','Only EU citizens can apply'],a:1},de:{q:'Was ist das Asylrecht in Deutschland?',opts:['Jeder kann frei nach Deutschland ziehen','Politisch Verfolgte haben das Recht, Asyl zu beantragen','Asylbewerber erhalten automatisch die Staatsbürgerschaft','Nur EU-Bürger können einen Antrag stellen'],a:1}},
+  {n:70,cat:'constitution',en:{q:'What does the "democracy principle" in Germany mean?',opts:['The president makes all decisions','Power comes from the people through elections','Only politicians vote','Decisions are made by referendum only'],a:1},de:{q:'Was bedeutet das Demokratieprinzip in Deutschland?',opts:['Der Präsident trifft alle Entscheidungen','Macht kommt vom Volk durch Wahlen','Nur Politiker wählen','Entscheidungen werden nur per Volksabstimmung getroffen'],a:1}},
+  {n:71,cat:'constitution',en:{q:'What is "Meinungsfreiheit" (freedom of opinion)?',opts:['Freedom to do anything','The right to express opinions freely','Freedom to travel','Freedom to trade'],a:1},de:{q:'Was ist Meinungsfreiheit?',opts:['Freiheit, alles zu tun','Das Recht, Meinungen frei zu äußern','Reisefreiheit','Handelsfreiheit'],a:1}},
+  {n:72,cat:'constitution',en:{q:'What is "Pressefreiheit" (freedom of the press)?',opts:['Free newspapers for everyone','The right of media to report without government censorship','Free TV licenses','Journalists working for free'],a:1},de:{q:'Was ist Pressefreiheit?',opts:['Kostenlose Zeitungen für alle','Das Recht der Medien, ohne staatliche Zensur zu berichten','Kostenlose TV-Lizenzen','Journalisten, die umsonst arbeiten'],a:1}},
+  {n:73,cat:'constitution',en:{q:'What is "Versammlungsfreiheit" (freedom of assembly)?',opts:['Freedom to travel anywhere','The right to gather and demonstrate peacefully','Freedom to build anywhere','The right to form companies'],a:1},de:{q:'Was ist Versammlungsfreiheit?',opts:['Reisefreiheit überall','Das Recht, sich friedlich zu versammeln und zu demonstrieren','Baufreiheit überall','Das Recht, Unternehmen zu gründen'],a:1}},
+  {n:74,cat:'constitution',en:{q:'What is the separation of powers (Gewaltenteilung)?',opts:['Division of Germany into zones','Splitting power between legislative, executive and judicial branches','Distribution of tax revenue','Military command structure'],a:1},de:{q:'Was ist die Gewaltenteilung?',opts:['Aufteilung Deutschlands in Zonen','Aufteilung der Macht in Legislative, Exekutive und Judikative','Verteilung von Steuereinnahmen','Militärische Kommandostruktur'],a:1}},
+  {n:75,cat:'constitution',en:{q:'What is "Gleichstellung" (gender equality) in Germany?',opts:['Equal rights and opportunities for all genders guaranteed by law','Equal pay only','Women getting preference in hiring','Separate rules for men and women'],a:0},de:{q:'Was ist Gleichstellung in Deutschland?',opts:['Gleiche Rechte und Chancen für alle Geschlechter, gesetzlich garantiert','Nur gleiche Bezahlung','Bevorzugung von Frauen bei Einstellungen','Getrennte Regeln für Männer und Frauen'],a:0}},
+  {n:76,cat:'germany',en:{q:'How many federal states (Bundesländer) does Germany have?',opts:['12','14','16','18'],a:2},de:{q:'Wie viele Bundesländer hat Deutschland?',opts:['12','14','16','18'],a:2}},
+  {n:77,cat:'germany',en:{q:'What is the capital of Germany?',opts:['Bonn','Frankfurt','Munich','Berlin'],a:3},de:{q:'Was ist die Hauptstadt Deutschlands?',opts:['Bonn','Frankfurt','München','Berlin'],a:3}},
+  {n:78,cat:'germany',en:{q:'Which is the most populous German state?',opts:['Bavaria','Baden-Württemberg','North Rhine-Westphalia','Hesse'],a:2},de:{q:'Welches ist das bevölkerungsreichste Bundesland?',opts:['Bayern','Baden-Württemberg','Nordrhein-Westfalen','Hessen'],a:2}},
+  {n:79,cat:'germany',en:{q:'Which is the largest German state by area?',opts:['North Rhine-Westphalia','Bavaria','Baden-Württemberg','Lower Saxony'],a:1},de:{q:'Welches ist das flächengrößte Bundesland?',opts:['Nordrhein-Westfalen','Bayern','Baden-Württemberg','Niedersachsen'],a:1}},
+  {n:80,cat:'germany',en:{q:'Which city-states exist in Germany?',opts:['Berlin, Munich, Frankfurt','Berlin, Hamburg, Bremen','Hamburg, Cologne, Bremen','Berlin, Hamburg, Hanover'],a:1},de:{q:'Welche Stadtstaaten gibt es in Deutschland?',opts:['Berlin, München, Frankfurt','Berlin, Hamburg, Bremen','Hamburg, Köln, Bremen','Berlin, Hamburg, Hannover'],a:1}},
+  {n:81,cat:'germany',en:{q:'Which sea borders Germany to the north?',opts:['Mediterranean Sea','Baltic Sea and North Sea','Atlantic Ocean','Black Sea'],a:1},de:{q:'Welche Meere grenzen im Norden an Deutschland?',opts:['Mittelmeer','Ostsee und Nordsee','Atlantischer Ozean','Schwarzes Meer'],a:1}},
+  {n:82,cat:'germany',en:{q:'What is the highest mountain in Germany?',opts:['Feldberg','Brocken','Zugspitze','Watzmann'],a:2},de:{q:'Was ist der höchste Berg Deutschlands?',opts:['Feldberg','Brocken','Zugspitze','Watzmann'],a:2}},
+  {n:83,cat:'germany',en:{q:'What river runs through Cologne?',opts:['Elbe','Danube','Rhine','Main'],a:2},de:{q:'Welcher Fluss fließt durch Köln?',opts:['Elbe','Donau','Rhein','Main'],a:2}},
+  {n:84,cat:'germany',en:{q:'What is the approximate population of Germany?',opts:['60 million','70 million','84 million','90 million'],a:2},de:{q:'Wie hoch ist die ungefähre Einwohnerzahl Deutschlands?',opts:['60 Millionen','70 Millionen','84 Millionen','90 Millionen'],a:2}},
+  {n:85,cat:'germany',en:{q:'Which German city is famous for the Oktoberfest?',opts:['Berlin','Frankfurt','Hamburg','Munich'],a:3},de:{q:'Welche deutsche Stadt ist für das Oktoberfest bekannt?',opts:['Berlin','Frankfurt','Hamburg','München'],a:3}},
+  {n:86,cat:'germany',en:{q:'What is the official name of Germany?',opts:['Germany','German State','Federal Republic of Germany','German Democratic Republic'],a:2},de:{q:'Was ist der offizielle Name Deutschlands?',opts:['Deutschland','Deutsches Reich','Bundesrepublik Deutschland','Deutsche Demokratische Republik'],a:2}},
+  {n:87,cat:'germany',en:{q:'How many countries border Germany?',opts:['7','8','9','10'],a:2},de:{q:'Wie viele Länder grenzen an Deutschland?',opts:['7','8','9','10'],a:2}},
+  {n:88,cat:'germany',en:{q:'What is the Ruhrgebiet?',opts:['A wine-growing region','Germany\'s largest industrial metropolitan area','A nature reserve','A mountain range'],a:1},de:{q:'Was ist das Ruhrgebiet?',opts:['Eine Weinbauregion','Deutschlands größtes Industriegebiet','Ein Naturschutzgebiet','Ein Gebirge'],a:1}},
+  {n:89,cat:'germany',en:{q:'What is Germany\'s form of government?',opts:['Constitutional monarchy','Presidential republic','Parliamentary democracy (federal republic)','Theocracy'],a:2},de:{q:'Was ist die Staatsform Deutschlands?',opts:['Konstitutionelle Monarchie','Präsidialrepublik','Parlamentarische Demokratie (Bundesrepublik)','Theokratie'],a:2}},
+  {n:90,cat:'germany',en:{q:'What is the Autobahn?',opts:['A type of German train','Germany\'s highway network','A German bus system','A cycling path'],a:1},de:{q:'Was ist die Autobahn?',opts:['Eine Art deutschen Zuges','Deutschlands Fernstraßennetz','Ein deutsches Bussystem','Ein Radweg'],a:1}},
+  {n:91,cat:'germany',en:{q:'What is the Black Forest (Schwarzwald)?',opts:['A national park in the north','A mountain range in southwestern Germany','A German city','A coal mining area'],a:1},de:{q:'Was ist der Schwarzwald?',opts:['Ein Nationalpark im Norden','Ein Gebirge im Südwesten Deutschlands','Eine deutsche Stadt','Ein Bergbaugebiet'],a:1}},
+  {n:92,cat:'germany',en:{q:'What is the Bundestag?',opts:['Germany\'s upper house of parliament','Germany\'s lower house (federal parliament)','Germany\'s supreme court','Germany\'s federal government'],a:1},de:{q:'Was ist der Bundestag?',opts:['Das Oberhaus des deutschen Parlaments','Das Unterhaus (Bundesparlament)','Deutschlands oberstes Gericht','Die Bundesregierung'],a:1}},
+  {n:93,cat:'germany',en:{q:'Where is the Bundestag located?',opts:['Bonn','Frankfurt','Munich','Berlin'],a:3},de:{q:'Wo befindet sich der Bundestag?',opts:['Bonn','Frankfurt','München','Berlin'],a:3}},
+  {n:94,cat:'germany',en:{q:'What is the Bundesrat?',opts:['Germany\'s lower house of parliament','Germany\'s upper house representing the 16 states','Germany\'s supreme court','The federal president\'s office'],a:1},de:{q:'Was ist der Bundesrat?',opts:['Das Unterhaus des deutschen Parlaments','Das Oberhaus, das die 16 Bundesländer vertritt','Deutschlands oberstes Gericht','Das Büro des Bundespräsidenten'],a:1}},
+  {n:95,cat:'germany',en:{q:'What is Germany\'s largest lake?',opts:['Lake Constance (Bodensee)','Müritz','Chiemsee','Ammersee'],a:0},de:{q:'Was ist Deutschlands größter See?',opts:['Bodensee','Müritz','Chiemsee','Ammersee'],a:0}},
+  {n:96,cat:'germany',en:{q:'What does "Nordsee" refer to?',opts:['Baltic Sea','North Sea','North Rhine','Northern Germany'],a:1},de:{q:'Was bezeichnet "Nordsee"?',opts:['Ostsee','Nordsee','Nordrhein','Norddeutschland'],a:1}},
+  {n:97,cat:'germany',en:{q:'What does "Ostsee" refer to?',opts:['Eastern Germany','Baltic Sea','North Sea','Eastern river'],a:1},de:{q:'Was bezeichnet "Ostsee"?',opts:['Ostdeutschland','Ostsee','Nordsee','Ostfluss'],a:1}},
+  {n:98,cat:'germany',en:{q:'Which neighboring country shares Germany\'s longest border?',opts:['France','Austria','Czech Republic','Poland'],a:3},de:{q:'Welches Nachbarland hat die längste Grenze mit Deutschland?',opts:['Frankreich','Österreich','Tschechien','Polen'],a:3}},
+  {n:99,cat:'germany',en:{q:'What is a "Gemeinde" (municipality)?',opts:['A federal state','A local government unit','A federal ministry','A court district'],a:1},de:{q:'Was ist eine Gemeinde?',opts:['Ein Bundesland','Eine kommunale Verwaltungseinheit','Ein Bundesministerium','Ein Gerichtsbezirk'],a:1}},
+  {n:100,cat:'germany',en:{q:'What is the currency of Germany?',opts:['Deutschmark','Swiss Franc','Euro','Pound'],a:2},de:{q:'Was ist die Währung Deutschlands?',opts:['Deutsche Mark','Schweizer Franken','Euro','Pfund'],a:2}},
+  {n:101,cat:'politics',en:{q:'Who is the head of government in Germany?',opts:['The President','The Chancellor','The Speaker of the Bundestag','The Finance Minister'],a:1},de:{q:'Wer ist der Regierungschef in Deutschland?',opts:['Der Bundespräsident','Der Bundeskanzler','Der Bundestagspräsident','Der Finanzminister'],a:1}},
+  {n:102,cat:'politics',en:{q:'Who is the head of state in Germany?',opts:['The Chancellor','The President','The Prime Minister','The Chief Justice'],a:1},de:{q:'Wer ist das Staatsoberhaupt in Deutschland?',opts:['Der Bundeskanzler','Der Bundespräsident','Der Ministerpräsident','Der Oberste Richter'],a:1}},
+  {n:103,cat:'politics',en:{q:'How is the Federal Chancellor elected?',opts:['Directly by the people','By the Bundestag','By the Bundesrat','By the Federal President'],a:1},de:{q:'Wie wird der Bundeskanzler gewählt?',opts:['Direkt vom Volk','Vom Bundestag','Vom Bundesrat','Vom Bundespräsidenten'],a:1}},
+  {n:104,cat:'politics',en:{q:'How long is a Bundestag legislative period?',opts:['3 years','4 years','5 years','6 years'],a:1},de:{q:'Wie lange dauert eine Wahlperiode des Bundestags?',opts:['3 Jahre','4 Jahre','5 Jahre','6 Jahre'],a:1}},
+  {n:105,cat:'politics',en:{q:'What is the minimum voting age for Bundestag elections?',opts:['16','17','18','21'],a:2},de:{q:'Was ist das Mindestalter für die Wahl zum Bundestag?',opts:['16','17','18','21'],a:2}},
+  {n:106,cat:'politics',en:{q:'What is the 5% threshold (Fünf-Prozent-Hürde)?',opts:['A minimum tax rate','A rule that parties must win at least 5% of votes to enter the Bundestag','A required savings rate','A minimum wage rule'],a:1},de:{q:'Was ist die Fünf-Prozent-Hürde?',opts:['Ein Mindeststeuersatz','Eine Regel, nach der Parteien mindestens 5% der Stimmen erhalten müssen, um in den Bundestag einzuziehen','Eine vorgeschriebene Sparquote','Eine Mindestlohnregel'],a:1}},
+  {n:107,cat:'politics',en:{q:'How long is the Federal President\'s term?',opts:['4 years','5 years','6 years','7 years'],a:1},de:{q:'Wie lang ist die Amtszeit des Bundespräsidenten?',opts:['4 Jahre','5 Jahre','6 Jahre','7 Jahre'],a:1}},
+  {n:108,cat:'politics',en:{q:'Who elects the Federal President?',opts:['The German people directly','The Federal Assembly (Bundesversammlung)','The Bundestag alone','The Bundesrat alone'],a:1},de:{q:'Wer wählt den Bundespräsidenten?',opts:['Das deutsche Volk direkt','Die Bundesversammlung','Der Bundestag allein','Der Bundesrat allein'],a:1}},
+  {n:109,cat:'politics',en:{q:'Where is the Federal Constitutional Court located?',opts:['Berlin','Frankfurt','Karlsruhe','Munich'],a:2},de:{q:'Wo befindet sich das Bundesverfassungsgericht?',opts:['Berlin','Frankfurt','Karlsruhe','München'],a:2}},
+  {n:110,cat:'politics',en:{q:'What is the role of the opposition in the Bundestag?',opts:['To support all government decisions','To critically scrutinize and challenge the governing coalition','To manage local affairs','To represent Germany abroad'],a:1},de:{q:'Was ist die Aufgabe der Opposition im Bundestag?',opts:['Die Regierung in allen Entscheidungen zu unterstützen','Die Regierungskoalition kritisch zu hinterfragen und zu kontrollieren','Lokale Angelegenheiten zu verwalten','Deutschland im Ausland zu vertreten'],a:1}},
+  {n:111,cat:'politics',en:{q:'What is a coalition government?',opts:['A government led by the military','A government formed by two or more parties together','A government led by a single party with a majority','A government appointed by the president'],a:1},de:{q:'Was ist eine Koalitionsregierung?',opts:['Eine Regierung unter Führung des Militärs','Eine Regierung, die von zwei oder mehr Parteien gemeinsam gebildet wird','Eine Regierung einer Partei mit absoluter Mehrheit','Eine vom Präsidenten eingesetzte Regierung'],a:1}},
+  {n:112,cat:'politics',en:{q:'What is the SPD?',opts:['A German news agency','The Social Democratic Party of Germany','A German trade union','A federal ministry'],a:1},de:{q:'Was ist die SPD?',opts:['Eine deutsche Nachrichtenagentur','Die Sozialdemokratische Partei Deutschlands','Eine deutsche Gewerkschaft','Ein Bundesministerium'],a:1}},
+  {n:113,cat:'politics',en:{q:'What is the CDU?',opts:['A German TV channel','The Christian Democratic Union party','A federal ministry','A German trade union'],a:1},de:{q:'Was ist die CDU?',opts:['Ein deutsches Fernsehsender','Die Christlich Demokratische Union','Ein Bundesministerium','Eine deutsche Gewerkschaft'],a:1}},
+  {n:114,cat:'politics',en:{q:'What is the FDP?',opts:['A German public broadcaster','The Free Democratic Party','A German police force','A federal development program'],a:1},de:{q:'Was ist die FDP?',opts:['Ein öffentlich-rechtlicher Rundfunk','Die Freie Demokratische Partei','Eine deutsche Polizeieinheit','Ein Bundesförderprogramm'],a:1}},
+  {n:115,cat:'politics',en:{q:'What does "Erststimme" (first vote) mean in Bundestag elections?',opts:['Vote for a political party','Direct vote for a candidate in the constituency','Vote for the Chancellor','Vote for the President'],a:1},de:{q:'Was bedeutet "Erststimme" bei Bundestagswahlen?',opts:['Stimme für eine politische Partei','Direktstimme für einen Kandidaten im Wahlkreis','Stimme für den Bundeskanzler','Stimme für den Bundespräsidenten'],a:1}},
+  {n:116,cat:'politics',en:{q:'What does "Zweitstimme" (second vote) mean in Bundestag elections?',opts:['Vote for a direct candidate','Vote for a political party (party list)','Vote for the Bundesrat','Repeat vote if first was invalid'],a:1},de:{q:'Was bedeutet "Zweitstimme" bei Bundestagswahlen?',opts:['Stimme für einen Direktkandidaten','Stimme für eine politische Partei (Landesliste)','Stimme für den Bundesrat','Wiederholungsstimme'],a:1}},
+  {n:117,cat:'politics',en:{q:'Can political parties be banned in Germany?',opts:['No, never','Yes, by the Federal Constitutional Court if they threaten democracy','Yes, by the Chancellor','Yes, by public referendum'],a:1},de:{q:'Können politische Parteien in Deutschland verboten werden?',opts:['Nein, niemals','Ja, durch das Bundesverfassungsgericht, wenn sie die Demokratie gefährden','Ja, durch den Bundeskanzler','Ja, durch Volksabstimmung'],a:1}},
+  {n:118,cat:'politics',en:{q:'What is the "constructive vote of no confidence"?',opts:['A way to call a referendum','A method to replace the Chancellor by electing a successor simultaneously','A way to dissolve the Bundestag','A presidential power'],a:1},de:{q:'Was ist das konstruktive Misstrauensvotum?',opts:['Eine Möglichkeit, eine Volksabstimmung einzuberufen','Eine Methode, den Kanzler zu ersetzen, indem gleichzeitig ein Nachfolger gewählt wird','Eine Möglichkeit, den Bundestag aufzulösen','Eine Befugnis des Bundespräsidenten'],a:1}},
+  {n:119,cat:'politics',en:{q:'What is the role of the Bundesrat?',opts:['To elect the Chancellor','To represent the 16 federal states and participate in federal legislation','To command the military','To manage foreign policy'],a:1},de:{q:'Was ist die Aufgabe des Bundesrates?',opts:['Den Bundeskanzler zu wählen','Die 16 Bundesländer zu vertreten und an der Bundesgesetzgebung mitzuwirken','Das Militär zu befehligen','Die Außenpolitik zu gestalten'],a:1}},
+  {n:120,cat:'politics',en:{q:'What is "Volkssouveränität" (popular sovereignty)?',opts:['A royal family\'s power','The principle that political power comes from the people','Military supremacy','Church authority'],a:1},de:{q:'Was ist Volkssouveränität?',opts:['Die Macht einer königlichen Familie','Das Prinzip, dass politische Macht vom Volk ausgeht','Militärische Vorherrschaft','Kirchliche Autorität'],a:1}},
+  {n:121,cat:'politics',en:{q:'What is the legislative branch in Germany?',opts:['The Chancellor and cabinet','The Bundestag and Bundesrat','The courts','The President'],a:1},de:{q:'Was ist die Legislative in Deutschland?',opts:['Bundeskanzler und Kabinett','Bundestag und Bundesrat','Die Gerichte','Der Bundespräsident'],a:1}},
+  {n:122,cat:'politics',en:{q:'What is the executive branch in Germany?',opts:['The Bundestag','The Chancellor and federal government','The courts','The Bundesrat'],a:1},de:{q:'Was ist die Exekutive in Deutschland?',opts:['Der Bundestag','Der Bundeskanzler und die Bundesregierung','Die Gerichte','Der Bundesrat'],a:1}},
+  {n:123,cat:'politics',en:{q:'What is the judicial branch in Germany?',opts:['The Bundestag','The Chancellor','The courts','The Bundesrat'],a:2},de:{q:'Was ist die Judikative in Deutschland?',opts:['Der Bundestag','Der Bundeskanzler','Die Gerichte','Der Bundesrat'],a:2}},
+  {n:124,cat:'politics',en:{q:'What is "Datenschutz" (data protection)?',opts:['Physical security of computers','Legal protection of personal data from misuse','Internet censorship','Business data backup rules'],a:1},de:{q:'Was ist Datenschutz?',opts:['Physische Sicherheit von Computern','Rechtlicher Schutz personenbezogener Daten vor Missbrauch','Internetzensur','Datensicherungsregeln für Unternehmen'],a:1}},
+  {n:125,cat:'politics',en:{q:'What is "kommunale Selbstverwaltung" (local self-governance)?',opts:['National government managing local affairs','The right of municipalities to govern their own local affairs','State governments controlling cities','EU management of local services'],a:1},de:{q:'Was ist kommunale Selbstverwaltung?',opts:['Nationale Verwaltung lokaler Angelegenheiten','Das Recht der Gemeinden, ihre eigenen Angelegenheiten zu verwalten','Staatskontrolle über Städte','EU-Verwaltung lokaler Dienste'],a:1}},
+  {n:126,cat:'judiciary',en:{q:'What is the "Bundesgerichtshof" (Federal Court of Justice)?',opts:['Germany\'s constitutional court','Germany\'s highest court for civil and criminal matters','Germany\'s tax court','Germany\'s administrative court'],a:1},de:{q:'Was ist der Bundesgerichtshof?',opts:['Deutschlands Verfassungsgericht','Deutschlands oberstes Zivil- und Strafgericht','Deutschlands Steuergericht','Deutschlands Verwaltungsgericht'],a:1}},
+  {n:127,cat:'judiciary',en:{q:'What does "Unschuldsvermutung" (presumption of innocence) mean?',opts:['All accused are guilty','A person is innocent until proven guilty','Police decide guilt','Witnesses decide guilt'],a:1},de:{q:'Was bedeutet Unschuldsvermutung?',opts:['Alle Angeklagten sind schuldig','Eine Person gilt als unschuldig, bis ihre Schuld bewiesen ist','Die Polizei entscheidet über Schuld','Zeugen entscheiden über Schuld'],a:1}},
+  {n:128,cat:'judiciary',en:{q:'What is "Sozialversicherung" (social insurance) in Germany?',opts:['Private insurance only','Compulsory insurance covering health, pension, unemployment and care','A voluntary savings plan','Government grants'],a:1},de:{q:'Was ist die Sozialversicherung in Deutschland?',opts:['Nur private Versicherung','Pflichtversicherungssystem für Gesundheit, Rente, Arbeitslosigkeit und Pflege','Ein freiwilliger Sparplan','Staatliche Zuschüsse'],a:1}},
+  {n:129,cat:'judiciary',en:{q:'What does "Rentenversicherung" (pension insurance) provide?',opts:['Income during unemployment','Income in old age or disability','Health care coverage','Accident coverage'],a:1},de:{q:'Was bietet die Rentenversicherung?',opts:['Einkommen während der Arbeitslosigkeit','Einkommen im Alter oder bei Invalidität','Krankenversorgung','Unfallversorgung'],a:1}},
+  {n:130,cat:'judiciary',en:{q:'What is "Krankenversicherung" (health insurance) in Germany?',opts:['Optional private insurance','Compulsory health insurance covering medical costs','A government hospital system only','Free healthcare without insurance'],a:1},de:{q:'Was ist die Krankenversicherung in Deutschland?',opts:['Optionale private Versicherung','Pflicht-Krankenversicherung, die medizinische Kosten abdeckt','Nur ein staatliches Krankenhaussystem','Kostenlose Gesundheitsversorgung ohne Versicherung'],a:1}},
+  {n:131,cat:'judiciary',en:{q:'What is "Elterngeld" (parental benefit)?',opts:['Child benefit paid until age 18','Income support for parents after the birth of a child','An adoption subsidy','A school fee subsidy'],a:1},de:{q:'Was ist Elterngeld?',opts:['Kindergeld bis zum 18. Lebensjahr','Einkommensunterstützung für Eltern nach der Geburt eines Kindes','Eine Adoptionsbeihilfe','Ein Schulgeldzu­schuss'],a:1}},
+  {n:132,cat:'judiciary',en:{q:'What is "Kindergeld" (child benefit)?',opts:['A one-time birth payment','Monthly financial support for parents raising children','A school supply fund','A childcare subsidy only'],a:1},de:{q:'Was ist Kindergeld?',opts:['Eine einmalige Geburtszahlung','Monatliche finanzielle Unterstützung für Eltern, die Kinder erziehen','Ein Schulmaterialfonds','Nur ein Kinderbetreuungszuschuss'],a:1}},
+  {n:133,cat:'judiciary',en:{q:'What is "Gewerkschaft" (trade union)?',opts:['A business association','An organization representing workers\' interests','A government employment agency','A workers\' social club'],a:1},de:{q:'Was ist eine Gewerkschaft?',opts:['Ein Unternehmensverband','Eine Organisation, die die Interessen der Arbeitnehmer vertritt','Eine staatliche Arbeitsvermittlung','Ein sozialer Club der Arbeitnehmer'],a:1}},
+  {n:134,cat:'judiciary',en:{q:'What is "Kündigungsschutz" (protection against dismissal)?',opts:['Rules allowing employers to fire workers freely','Legal protection of employees against unfair dismissal','A notice period only','A rule for self-employed workers'],a:1},de:{q:'Was ist Kündigungsschutz?',opts:['Regeln, die Arbeitgebern das freie Kündigen erlauben','Rechtlicher Schutz der Arbeitnehmer vor ungerechtfertigter Kündigung','Nur eine Kündigungsfrist','Eine Regel für Selbstständige'],a:1}},
+  {n:135,cat:'judiciary',en:{q:'What is "Mindestlohn" (minimum wage)?',opts:['A maximum salary cap','The legally required minimum hourly wage','A suggested wage rate','A tax threshold'],a:1},de:{q:'Was ist der Mindestlohn?',opts:['Eine maximale Gehaltsgrenze','Der gesetzlich vorgeschriebene Mindestlohn pro Stunde','Ein empfohlener Lohnsatz','Eine Steuergrenze'],a:1}},
+  {n:136,cat:'judiciary',en:{q:'What is "Pflegeversicherung" (long-term care insurance)?',opts:['Child care insurance','Insurance covering care needs when someone can no longer care for themselves','Disability insurance','Home insurance'],a:1},de:{q:'Was ist die Pflegeversicherung?',opts:['Kinderbetreuungsversicherung','Versicherung für Pflegebedürftige, die sich nicht mehr selbst versorgen können','Invaliditätsversicherung','Hausratversicherung'],a:1}},
+  {n:137,cat:'judiciary',en:{q:'What is "Arbeitslosenversicherung" (unemployment insurance)?',opts:['Insurance against workplace accidents','Insurance providing income when someone loses their job','A pension supplement','A health supplement'],a:1},de:{q:'Was ist die Arbeitslosenversicherung?',opts:['Versicherung gegen Arbeitsunfälle','Versicherung, die Einkommen bei Jobverlust sichert','Ein Rentenzuschuss','Ein Gesundheitszuschuss'],a:1}},
+  {n:138,cat:'judiciary',en:{q:'What is the legal minimum annual paid vacation in Germany?',opts:['10 days','20 working days','24 working days','30 days'],a:2},de:{q:'Wie viele Urlaubstage stehen Arbeitnehmern in Deutschland gesetzlich mindestens zu?',opts:['10 Tage','20 Werktage','24 Werktage','30 Tage'],a:2}},
+  {n:139,cat:'judiciary',en:{q:'What is "Bafög"?',opts:['A business loan','State financial support for students','A housing benefit','A pension supplement'],a:1},de:{q:'Was ist BAföG?',opts:['Ein Unternehmenskredit','Staatliche Förderung für Studierende (Bundesausbildungsförderungsgesetz)','Eine Wohnbeihilfe','Ein Rentenzuschuss'],a:1}},
+  {n:140,cat:'judiciary',en:{q:'What is "Wohngeld" (housing benefit)?',opts:['A mortgage subsidy','State financial support for low-income households towards rent/mortgage','Free social housing','A utility bill subsidy'],a:1},de:{q:'Was ist Wohngeld?',opts:['Ein Hypothekenzuschuss','Staatliche Unterstützung für einkommensschwache Haushalte für Miete oder Hypothek','Kostenloser sozialer Wohnungsbau','Ein Nebenkosten­zuschuss'],a:1}},
+  {n:141,cat:'education',en:{q:'How long is compulsory school education in Germany?',opts:['8 years','9 years','At least 9–12 years depending on the state','6 years'],a:2},de:{q:'Wie lange dauert die Schulpflicht in Deutschland?',opts:['8 Jahre','9 Jahre','Mindestens 9–12 Jahre je nach Bundesland','6 Jahre'],a:2}},
+  {n:142,cat:'education',en:{q:'What is the "Grundschule" (primary school)?',opts:['Secondary school','The first level of school, usually lasting 4 years','A vocational school','A kindergarten'],a:1},de:{q:'Was ist die Grundschule?',opts:['Eine weiterführende Schule','Die erste Schulstufe, meist 4 Jahre','Eine Berufsschule','Ein Kindergarten'],a:1}},
+  {n:143,cat:'education',en:{q:'What is a "Gymnasium" in Germany?',opts:['A sports hall','An academic secondary school leading to the Abitur','A vocational school','A primary school'],a:1},de:{q:'Was ist ein Gymnasium in Deutschland?',opts:['Eine Sporthalle','Eine akademische weiterführende Schule, die zum Abitur führt','Eine Berufsschule','Eine Grundschule'],a:1}},
+  {n:144,cat:'education',en:{q:'What is the "Abitur"?',opts:['A vocational certificate','Germany\'s upper secondary school leaving certificate enabling university study','A primary school diploma','A trade qualification'],a:1},de:{q:'Was ist das Abitur?',opts:['Ein Berufszeugnis','Das deutsche Abschlusszeugnis der gymnasialen Oberstufe für das Studium','Ein Grundschulzeugnis','Ein Handwerkszeugnis'],a:1}},
+  {n:145,cat:'education',en:{q:'What is "duale Ausbildung" (dual vocational training)?',opts:['Two degrees at once','Vocational training combining workplace practice and vocational school','Training at two schools','Evening classes plus day work'],a:1},de:{q:'Was ist duale Ausbildung?',opts:['Zwei Abschlüsse gleichzeitig','Berufsausbildung, die Betrieb und Berufsschule kombiniert','Ausbildung an zwei Schulen','Abendkurse plus Tagesarbeit'],a:1}},
+  {n:146,cat:'education',en:{q:'At what age do children typically start school in Germany?',opts:['4','5','6','7'],a:2},de:{q:'Mit welchem Alter beginnen Kinder in Deutschland typischerweise die Schule?',opts:['4','5','6','7'],a:2}},
+  {n:147,cat:'education',en:{q:'What is "Kindergarten" in Germany?',opts:['A primary school','A pre-school institution for young children before school age','A type of garden','A junior secondary school'],a:1},de:{q:'Was ist ein Kindergarten in Deutschland?',opts:['Eine Grundschule','Eine Vorschuleinrichtung für Kinder vor dem Schulalter','Eine Art Garten','Eine Unterstufe der weiterführenden Schule'],a:1}},
+  {n:148,cat:'education',en:{q:'What is the legal age of majority (Volljährigkeit) in Germany?',opts:['16','17','18','21'],a:2},de:{q:'Was ist das gesetzliche Volljährigkeitsalter in Deutschland?',opts:['16','17','18','21'],a:2}},
+  {n:149,cat:'education',en:{q:'What is "Ehe" (marriage) legally in Germany?',opts:['A religious ceremony only','A legal union between two people (since 2017, including same-sex couples)','Only between a man and a woman','A civil partnership only'],a:1},de:{q:'Was ist Ehe rechtlich in Deutschland?',opts:['Nur eine religiöse Zeremonie','Eine rechtliche Verbindung zwischen zwei Personen (seit 2017 auch gleichgeschlechtlich)','Nur zwischen Mann und Frau','Nur eine eingetragene Lebenspartnerschaft'],a:1}},
+  {n:150,cat:'education',en:{q:'What is "Elternzeit" (parental leave)?',opts:['A school holiday for parents','Time off work for parents to care for a new baby (up to 3 years)','Paid vacation for parents','A school meeting obligation'],a:1},de:{q:'Was ist Elternzeit?',opts:['Schulferien für Eltern','Freistellung vom Beruf zur Kinderpflege (bis zu 3 Jahre)','Bezahlter Urlaub für Eltern','Eine Schulversammlungspflicht'],a:1}},
+  {n:151,cat:'education',en:{q:'What is the European Union (EU)?',opts:['A military alliance','A political and economic union of European countries','A trading company','A currency union only'],a:1},de:{q:'Was ist die Europäische Union (EU)?',opts:['Ein Militärbündnis','Eine politische und wirtschaftliche Union europäischer Länder','Ein Handelsunternehmen','Nur eine Währungsunion'],a:1}},
+  {n:152,cat:'education',en:{q:'How many member states does the EU have (as of 2024)?',opts:['25','27','30','32'],a:1},de:{q:'Wie viele Mitgliedstaaten hat die EU (Stand 2024)?',opts:['25','27','30','32'],a:1}},
+  {n:153,cat:'education',en:{q:'What is the European Parliament?',opts:['The EU\'s executive body','The directly elected legislative body of the EU','The EU\'s court','The EU\'s central bank'],a:1},de:{q:'Was ist das Europäische Parlament?',opts:['Das Exekutivorgan der EU','Das direkt gewählte Gesetzgebungsorgan der EU','Der Gerichtshof der EU','Die Europäische Zentralbank'],a:1}},
+  {n:154,cat:'education',en:{q:'What is the "Schengen Area"?',opts:['An EU military zone','A zone of countries without internal border controls','An EU agricultural zone','An EU free trade zone only'],a:1},de:{q:'Was ist der Schengen-Raum?',opts:['Eine EU-Militärzone','Eine Zone von Ländern ohne Binnengrenzenkontrollen','Eine EU-Agrarzone','Nur eine EU-Freihandelszone'],a:1}},
+  {n:155,cat:'education',en:{q:'What does the EU\'s "Freizügigkeit" (freedom of movement) allow?',opts:['Unrestricted trade only','EU citizens to live and work freely in any EU member state','Free travel only without work rights','Freedom of movement for goods only'],a:1},de:{q:'Was erlaubt die Freizügigkeit der EU?',opts:['Nur uneingeschränkten Handel','EU-Bürgern, in jedem EU-Mitgliedstaat frei zu leben und zu arbeiten','Nur Reisen ohne Arbeitsrecht','Nur Warenverkehrsfreiheit'],a:1}},
+  {n:156,cat:'education',en:{q:'What is the "Europäische Zentralbank" (European Central Bank)?',opts:['The EU\'s budget authority','The central bank managing the euro and monetary policy','The EU development bank','A European commercial bank'],a:1},de:{q:'Was ist die Europäische Zentralbank?',opts:['Die Haushaltsbehörde der EU','Die Zentralbank, die den Euro und die Geldpolitik verwaltet','Die EU-Entwicklungsbank','Eine europäische Geschäftsbank'],a:1}},
+  {n:157,cat:'education',en:{q:'Is Germany a member of the United Nations (UN)?',opts:['No','Yes, since 1973','Yes, since 1945','Yes, since 1990'],a:1},de:{q:'Ist Deutschland Mitglied der Vereinten Nationen (UN)?',opts:['Nein','Ja, seit 1973','Ja, seit 1945','Ja, seit 1990'],a:1}},
+  {n:158,cat:'education',en:{q:'What does "NATO" stand for?',opts:['North Atlantic Trade Organization','North Atlantic Treaty Organization','Nordic Alliance Treaty Organization','National Atlantic Treaty Operation'],a:1},de:{q:'Wofür steht "NATO"?',opts:['North Atlantic Trade Organization','North Atlantic Treaty Organization','Nordic Alliance Treaty Organization','National Atlantic Treaty Operation'],a:1}},
+  {n:159,cat:'education',en:{q:'What is "Klimaschutz" (climate protection) in German/EU policy?',opts:['A voluntary business initiative','Policies to reduce greenhouse gas emissions and protect the climate','A tax on industry only','A farming subsidy program'],a:1},de:{q:'Was ist Klimaschutz in der deutschen und EU-Politik?',opts:['Eine freiwillige Unternehmensinitiative','Maßnahmen zur Reduzierung von Treibhausgasen und zum Schutz des Klimas','Nur eine Steuer auf die Industrie','Ein Landwirtschaftssubventionsprogramm'],a:1}},
+  {n:160,cat:'education',en:{q:'What is "Menschenrechte" (human rights)?',opts:['Rights given by governments that can be taken away','Fundamental rights belonging to all humans regardless of nationality','Rights only for citizens','Rights defined by each country individually'],a:1},de:{q:'Was sind Menschenrechte?',opts:['Vom Staat verliehene Rechte, die entzogen werden können','Grundrechte aller Menschen unabhängig von ihrer Nationalität','Nur Rechte für Staatsbürger','Rechte, die jedes Land selbst definiert'],a:1}},
+  {n:161,cat:'education',en:{q:'What is "Ehrenamt" (volunteering) in Germany?',opts:['A paid government position','Unpaid voluntary work for the benefit of the community','A military duty','A civic tax'],a:1},de:{q:'Was ist das Ehrenamt in Deutschland?',opts:['Eine bezahlte Regierungsposition','Unbezahlte freiwillige Arbeit zum Wohl der Gemeinschaft','Eine Militärpflicht','Eine Bürgersteuer'],a:1}},
+  {n:162,cat:'education',en:{q:'What does "Integration" mean in the context of immigration to Germany?',opts:['Assimilation where immigrants abandon their culture','The process of becoming part of German society while retaining one\'s own identity','Isolation in separate communities','Mandatory language replacement'],a:1},de:{q:'Was bedeutet Integration im Kontext der Einwanderung nach Deutschland?',opts:['Assimilation, bei der Einwanderer ihre Kultur aufgeben','Der Prozess, Teil der deutschen Gesellschaft zu werden und dabei die eigene Identität zu bewahren','Isolation in getrennten Gemeinschaften','Zwangsweiser Sprachwechsel'],a:1}},
+  {n:163,cat:'education',en:{q:'What is the "Europarat" (Council of Europe)?',opts:['The same as the EU Council','A separate organization focused on human rights, with 46 member states','The European Commission','The European Parliament'],a:1},de:{q:'Was ist der Europarat?',opts:['Dasselbe wie der EU-Rat','Eine eigenständige Organisation zum Schutz der Menschenrechte mit 46 Mitgliedstaaten','Die Europäische Kommission','Das Europäische Parlament'],a:1}},
+  {n:164,cat:'education',en:{q:'What is EU citizenship?',opts:['A replacement for national citizenship','Additional rights including freedom of movement and right to vote in EU elections in your country of residence','Only a travel document','Automatic German citizenship'],a:1},de:{q:'Was ist die EU-Bürgerschaft?',opts:['Ein Ersatz für die nationale Staatsbürgerschaft','Zusätzliche Rechte, einschließlich Freizügigkeit und Wahlrecht bei EU-Wahlen im Wohnsitzland','Nur ein Reisedokument','Automatische deutsche Staatsbürgerschaft'],a:1}},
+  {n:165,cat:'education',en:{q:'What is the "Subsidiaritätsprinzip" (subsidiarity principle) in the EU?',opts:['The EU controls everything','Decisions are taken at EU level only when they cannot be better achieved at national/local level','National laws always override EU law','The EU provides all funding'],a:1},de:{q:'Was ist das Subsidiaritätsprinzip in der EU?',opts:['Die EU kontrolliert alles','Entscheidungen werden auf EU-Ebene nur getroffen, wenn sie auf nationaler/lokaler Ebene nicht besser erzielt werden können','Nationale Gesetze überschreiben immer EU-Recht','Die EU stellt alle Mittel bereit'],a:1}},
+  {n:166,cat:'nrw',en:{q:'What is the capital city of North Rhine-Westphalia (NRW)?',opts:['Cologne','Dortmund','Düsseldorf','Bonn'],a:2},de:{q:'Was ist die Landeshauptstadt von Nordrhein-Westfalen?',opts:['Köln','Dortmund','Düsseldorf','Bonn'],a:2}},
+  {n:167,cat:'nrw',en:{q:'What is NRW known as in terms of population?',opts:['Germany\'s smallest state','Germany\'s most populous state','Germany\'s least populated state','A city-state'],a:1},de:{q:'Wofür ist NRW bevölkerungsmäßig bekannt?',opts:['Deutschlands kleinstes Bundesland','Deutschlands bevölkerungsreichstes Bundesland','Deutschlands bevölkerungsärmstes Bundesland','Ein Stadtstaat'],a:1}},
+  {n:168,cat:'nrw',en:{q:'What industrial region is in NRW?',opts:['Silicon Valley of Germany','The Ruhrgebiet (Ruhr area)','The Black Forest region','Rhine Valley wine region'],a:1},de:{q:'Welches Industriegebiet liegt in NRW?',opts:['Silicon Valley Deutschlands','Das Ruhrgebiet','Die Schwarzwaldregion','Das Rheintal-Weingebiet'],a:1}},
+  {n:169,cat:'nrw',en:{q:'What is the Landtag NRW?',opts:['NRW\'s supreme court','NRW\'s state parliament','NRW\'s city council','NRW\'s police headquarters'],a:1},de:{q:'Was ist der Landtag NRW?',opts:['NRWs oberstes Gericht','NRWs Landtag (Parlament)','NRWs Stadtrat','NRWs Polizeipräsidium'],a:1}},
+  {n:170,cat:'nrw',en:{q:'Which famous cathedral is in Cologne, NRW?',opts:['Frauenkirche','Berliner Dom','Kölner Dom (Cologne Cathedral)','Ulmer Münster'],a:2},de:{q:'Welcher berühmte Dom befindet sich in Köln, NRW?',opts:['Frauenkirche','Berliner Dom','Kölner Dom','Ulmer Münster'],a:2}},
+  {n:171,cat:'nrw',en:{q:'Which two former regions merged to form NRW in 1946?',opts:['Prussia and Bavaria','North Rhine Province and Westphalia','Rhineland and Palatinate','Westphalia and Hanover'],a:1},de:{q:'Welche zwei früheren Gebiete schlossen sich 1946 zu NRW zusammen?',opts:['Preußen und Bayern','Rheinprovinz und Westfalen','Rheinland und Pfalz','Westfalen und Hannover'],a:1}},
+  {n:172,cat:'nrw',en:{q:'What river runs through Cologne in NRW?',opts:['Elbe','Danube','Rhine','Main'],a:2},de:{q:'Welcher Fluss fließt durch Köln in NRW?',opts:['Elbe','Donau','Rhein','Main'],a:2}},
+  {n:173,cat:'nrw',en:{q:'What major trade fair / exhibition city is in NRW?',opts:['Frankfurt','Berlin','Munich','Düsseldorf and Cologne'],a:3},de:{q:'Welche bedeutende Messestadt liegt in NRW?',opts:['Frankfurt','Berlin','München','Düsseldorf und Köln'],a:3}},
+  {n:174,cat:'nrw',en:{q:'What is a major challenge in the Ruhrgebiet area of NRW?',opts:['Flooding','Structural change from coal and steel industry decline','Drought','Forest fires'],a:1},de:{q:'Was ist eine große Herausforderung im Ruhrgebiet in NRW?',opts:['Überschwemmungen','Strukturwandel durch den Niedergang der Kohle- und Stahlindustrie','Dürre','Waldbrände'],a:1}},
+  {n:175,cat:'nrw',en:{q:'What is NRW\'s state government called?',opts:['Landesregierung NRW','Stadtrat NRW','Bundesrat NRW','Kabinett Köln'],a:0},de:{q:'Wie heißt die Landesregierung von NRW?',opts:['Landesregierung NRW','Stadtrat NRW','Bundesrat NRW','Kabinett Köln'],a:0}},
+];
+
+let lang = 'en';
+let currentCat = 'all';
+let searchTerm = '';
+let openCard = null;
+let seenCorrect = {};
+let quizQuestions = [];
+let quizIndex = 0;
+let quizCorrect = 0;
+let quizWrong = 0;
+let quizAnswered = false;
+let quizCat = 'all';
+let quizSize = 10;
+let quizCatSelected = 'all';
+
+// Load progress
+try { seenCorrect = JSON.parse(localStorage.getItem('lid_progress') || '{}'); } catch(e) {}
+
+function saveProgress() {
+  try { localStorage.setItem('lid_progress', JSON.stringify(seenCorrect)); } catch(e) {}
+}
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('btn-en').classList.toggle('active', l === 'en');
+  document.getElementById('btn-de').classList.toggle('active', l === 'de');
+  renderStudy();
+}
+
+function goPage(p) {
+  document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + p).classList.add('active');
+  const navMap = { 'study': 0, 'quiz-setup': 1, 'quiz': 1, 'progress': 2 };
+  if (navMap[p] !== undefined) {
+    document.querySelectorAll('.nav-btn')[navMap[p]].classList.add('active');
+  }
+  if (p === 'progress') renderProgress();
+  if (p === 'quiz-setup') renderQuizSetup();
+  window.scrollTo(0, 0);
+}
+
+// STUDY
+function getFiltered() {
+  let qs = QS;
+  if (currentCat !== 'all') qs = qs.filter(q => q.cat === currentCat);
+  if (searchTerm) {
+    const s = searchTerm.toLowerCase();
+    qs = qs.filter(q => {
+      const d = q[lang];
+      return d.q.toLowerCase().includes(s) || d.opts.some(o => o.toLowerCase().includes(s));
+    });
+  }
+  return qs;
+}
+
+function renderStudy() {
+  const cats = document.getElementById('cats');
+  const catDefs = [
+    { id: 'all', label: 'All (' + QS.length + ')' },
+    ...Object.entries(CATEGORIES).map(([id, c]) => ({
+      id,
+      label: (lang === 'en' ? c.en : c.de) + ' (' + QS.filter(q => q.cat === id).length + ')'
+    }))
+  ];
+  cats.innerHTML = catDefs.map(c =>
+    `<button class="cat${currentCat === c.id ? ' active' : ''}" onclick="setCat('${c.id}')">${c.label}</button>`
+  ).join('');
+
+  const filtered = getFiltered();
+  document.getElementById('results-info').textContent = filtered.length + ' questions' + (searchTerm ? ' matching "' + searchTerm + '"' : '');
+
+  const list = document.getElementById('q-list');
+  const empty = document.getElementById('empty');
+  if (filtered.length === 0) {
+    list.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+
+  list.innerHTML = filtered.map(q => {
+    const d = q[lang];
+    const isOpen = openCard === q.n;
+    const correct = seenCorrect[q.n];
+    let badgeClass = '';
+    if (correct === true) badgeClass = 'correct-badge';
+    else if (correct === false) badgeClass = 'wrong-badge';
+    let cardClass = 'q-card';
+    if (isOpen) cardClass += ' open';
+    if (correct === true) cardClass += ' answered-correct';
+    else if (correct === false) cardClass += ' answered-wrong';
+
+    let bodyHtml = '';
+    if (isOpen) {
+      const optsHtml = d.opts.map((o, i) => {
+        let cls = 'opt';
+        if (i === d.a) cls += ' revealed-correct';
+        return `<div class="${cls}"><span class="opt-letter">${i === d.a ? '✓' : String.fromCharCode(65+i)}</span>${o}</div>`;
+      }).join('');
+      bodyHtml = `<div class="q-body"><div class="options">${optsHtml}</div><div class="correct-label">✓ Correct answer: ${d.opts[d.a]}</div></div>`;
+      if (!seenCorrect.hasOwnProperty(q.n)) { seenCorrect[q.n] = true; saveProgress(); }
+    }
+
+    return `<div class="${cardClass}" onclick="toggleCard(${q.n})">
+      <div class="q-top">
+        <span class="q-num ${badgeClass}">#${q.n}</span>
+        <span class="q-text">${d.q}</span>
+        <span class="q-arrow">▾</span>
+      </div>
+      ${bodyHtml}
+    </div>`;
+  }).join('');
+}
+
+function setCat(cat) {
+  currentCat = cat;
+  openCard = null;
+  renderStudy();
+}
+
+function doSearch(val) {
+  searchTerm = val;
+  openCard = null;
+  renderStudy();
+}
+
+function toggleCard(n) {
+  openCard = openCard === n ? null : n;
+  renderStudy();
+}
+
+// QUIZ SETUP
+function renderQuizSetup() {
+  const grid = document.getElementById('quiz-cat-options');
+  const cats = [
+    { id: 'all', label: 'All questions', count: QS.length },
+    ...Object.entries(CATEGORIES).map(([id, c]) => ({
+      id, label: lang === 'en' ? c.en : c.de, count: QS.filter(q => q.cat === id).length
+    }))
+  ];
+  grid.innerHTML = cats.map(c =>
+    `<div class="quiz-option-card${quizCatSelected === c.id ? ' selected' : ''}" onclick="selectQuizCat('${c.id}')">
+      <span class="qoc-title">${c.label}</span>
+      <span class="qoc-count">${c.count} questions</span>
+    </div>`
+  ).join('');
+}
+
+function selectQuizCat(cat) {
+  quizCatSelected = cat;
+  renderQuizSetup();
+}
+
+function selectSize(n) {
+  quizSize = n;
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+  event.target.classList.add('selected');
+}
+
+function startQuiz() {
+  quizCat = quizCatSelected;
+  let pool = quizCat === 'all' ? [...QS] : QS.filter(q => q.cat === quizCat);
+  pool = pool.sort(() => Math.random() - 0.5);
+  quizQuestions = quizSize === 0 ? pool : pool.slice(0, Math.min(quizSize, pool.length));
+  quizIndex = 0;
+  quizCorrect = 0;
+  quizWrong = 0;
+  document.getElementById('q-results').classList.remove('show');
+  goPage('quiz');
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion() {
+  if (quizIndex >= quizQuestions.length) { showResults(); return; }
+  const q = quizQuestions[quizIndex];
+  const d = q[lang];
+  quizAnswered = false;
+  const pct = Math.round((quizIndex / quizQuestions.length) * 100);
+  document.getElementById('q-prog-fill').style.width = pct + '%';
+  document.getElementById('q-meta-left').textContent = 'Question ' + (quizIndex + 1) + ' of ' + quizQuestions.length;
+  document.getElementById('q-score-c').textContent = quizCorrect;
+  document.getElementById('q-score-w').textContent = quizWrong;
+  document.getElementById('q-cat-label').textContent = (lang === 'en' ? CATEGORIES[q.cat].en : CATEGORIES[q.cat].de).toUpperCase();
+  document.getElementById('q-question').textContent = d.q;
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-feedback').textContent = '';
+  document.getElementById('q-next').classList.remove('visible');
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('q-opts').innerHTML = d.opts.map((o, i) =>
+    `<button class="quiz-opt" onclick="answerQuiz(${i})">
+      <span class="quiz-ol">${letters[i]}</span>${o}
+    </button>`
+  ).join('');
+}
+
+function answerQuiz(chosen) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+  const q = quizQuestions[quizIndex];
+  const d = q[lang];
+  const correct = d.a === chosen;
+  if (correct) { quizCorrect++; seenCorrect[q.n] = true; }
+  else { quizWrong++; seenCorrect[q.n] = false; }
+  saveProgress();
+  document.getElementById('q-score-c').textContent = quizCorrect;
+  document.getElementById('q-score-w').textContent = quizWrong;
+
+  const btns = document.querySelectorAll('.quiz-opt');
+  btns.forEach((b, i) => {
+    b.disabled = true;
+    if (i === d.a) b.classList.add('reveal-correct');
+    if (i === chosen && !correct) b.classList.add('selected-wrong');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  if (correct) {
+    fb.className = 'quiz-feedback correct';
+    fb.textContent = '✓ Correct!';
+  } else {
+    fb.className = 'quiz-feedback wrong';
+    fb.textContent = '✗ The correct answer is: ' + d.opts[d.a];
+  }
+  document.getElementById('q-next').classList.add('visible');
+}
+
+function nextQuestion() {
+  quizIndex++;
+  renderQuizQuestion();
+}
+
+function showResults() {
+  document.getElementById('q-prog-fill').style.width = '100%';
+  const total = quizQuestions.length;
+  const pct = Math.round((quizCorrect / total) * 100);
+  const pass = quizCorrect >= Math.ceil(total * 0.5);
+  const r = document.getElementById('q-results');
+  document.getElementById('r-icon').textContent = pass ? '🏆' : '📚';
+  document.getElementById('r-score').textContent = quizCorrect + '/' + total;
+  document.getElementById('r-detail').textContent = pct + '% correct · ' + quizWrong + ' wrong';
+  const passEl = document.getElementById('r-pass');
+  if (total === 33) {
+    passEl.className = 'pass-tag ' + (quizCorrect >= 17 ? 'pass' : 'fail');
+    passEl.textContent = quizCorrect >= 17 ? '✓ Would pass real test!' : '✗ Need 17+ to pass';
+  } else {
+    passEl.className = 'pass-tag ' + (pass ? 'pass' : 'fail');
+    passEl.textContent = pass ? 'Great score!' : 'Keep studying!';
+  }
+  document.getElementById('r-msg').textContent = pass
+    ? 'Excellent work! Keep reviewing to stay sharp.'
+    : 'Don\'t worry — review the missed questions and try again!';
+  document.querySelector('.quiz-opts').innerHTML = '';
+  document.getElementById('q-feedback').className = 'quiz-feedback';
+  document.getElementById('q-next').classList.remove('visible');
+  r.classList.add('show');
+}
+
+function retryQuiz() {
+  document.getElementById('q-results').classList.remove('show');
+  startQuiz();
+}
+
+// PROGRESS
+function renderProgress() {
+  const total = QS.length;
+  const seen = Object.values(seenCorrect).filter(v => v === true).length;
+  const pct = total > 0 ? Math.round((seen / total) * 100) : 0;
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-sub').textContent = seen + ' of ' + total + ' answered correctly at least once';
+
+  const cats = Object.entries(CATEGORIES);
+  document.getElementById('prog-cats').innerHTML = cats.map(([id, c]) => {
+    const pool = QS.filter(q => q.cat === id);
+    const correct = pool.filter(q => seenCorrect[q.n] === true).length;
+    const pct2 = pool.length > 0 ? Math.round((correct / pool.length) * 100) : 0;
+    return `<div class="prog-card">
+      <div class="prog-cat">${lang === 'en' ? c.en : c.de}</div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct2}%;background:${c.color}"></div></div>
+      <div class="prog-nums"><span>${correct}/${pool.length} correct</span><span>${pct2}%</span></div>
+    </div>`;
+  }).join('');
+}
+
+function resetProgress() {
+  if (confirm('Reset all progress?')) {
+    seenCorrect = {};
+    saveProgress();
+    renderProgress();
+  }
+}
+
+// INIT
+renderStudy();
+renderQuizSetup();
