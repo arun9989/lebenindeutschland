@@ -602,8 +602,8 @@ body {
 <header class="header">
   <div class="logo">LiD <span>Einbürgerungstest</span></div>
   <div class="header-right">
-    <button class="mode-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-    <button class="mode-btn" id="btn-de" onclick="setLang('de')">DE</button>
+    <button class="mode-btn active" id="btn-en">EN</button>
+    <button class="mode-btn" id="btn-de">DE</button>
   </div>
 </header>
 
@@ -622,7 +622,7 @@ body {
   <div class="controls">
     <div class="search-wrap">
       <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-      <input type="text" id="search" placeholder="Search questions..." oninput="doSearch(this.value)">
+      <input type="text" id="search-input" placeholder="Search questions...">
     </div>
     <div class="cats" id="cats"></div>
   </div>
@@ -639,12 +639,12 @@ body {
     <div class="quiz-options-grid" id="quiz-cat-options"></div>
     <p style="font-size:0.8rem;color:var(--muted);margin-bottom:8px;">Number of questions</p>
     <div class="quiz-size-row" id="quiz-size-row">
-      <button class="size-btn selected" onclick="selectSize(10)">10</button>
-      <button class="size-btn" onclick="selectSize(20)">20</button>
-      <button class="size-btn" onclick="selectSize(33)">33 (real test)</button>
-      <button class="size-btn" onclick="selectSize(0)">All</button>
+      <button class="size-btn selected" data-size="10">10</button>
+      <button class="size-btn" data-size="20">20</button>
+      <button class="size-btn" data-size="33">33 (real test)</button>
+      <button class="size-btn" data-size="0">All</button>
     </div>
-    <button class="btn-primary" style="width:100%" onclick="startQuiz()">Start quiz →</button>
+    <button class="btn-primary" style="width:100%" id="start-quiz-btn">Start quiz →</button>
   </div>
 </div>
 
@@ -663,7 +663,7 @@ body {
   </div>
   <div class="quiz-opts" id="q-opts"></div>
   <div class="quiz-feedback" id="q-feedback"></div>
-  <button class="quiz-next" id="q-next" onclick="nextQuestion()">Next question →</button>
+  <button class="quiz-next" id="q-next" >Next question →</button>
   <div class="results" id="q-results">
     <div class="results-icon" id="r-icon"></div>
     <div class="results-score" id="r-score"></div>
@@ -671,9 +671,9 @@ body {
     <div class="pass-tag" id="r-pass"></div>
     <p id="r-msg" style="margin-bottom:1.5rem"></p>
     <div class="results-actions">
-      <button class="btn-primary" onclick="retryQuiz()">Try again</button>
-      <button class="btn-secondary" onclick="goPage('quiz-setup')">Choose different category</button>
-      <button class="btn-secondary" onclick="goPage('study')">Back to study</button>
+      <button class="btn-primary" id="retry-btn">Try again</button>
+      <button class="btn-secondary" id="go-quiz-setup-btn">Choose different category</button>
+      <button class="btn-secondary" id="go-study-btn">Back to study</button>
     </div>
   </div>
 </div>
@@ -687,21 +687,21 @@ body {
       <div class="sub" id="prog-sub">questions seen correctly</div>
     </div>
     <div id="prog-cats"></div>
-    <button class="reset-btn" onclick="resetProgress()">Reset all progress</button>
+    <button class="reset-btn" id="reset-btn">Reset all progress</button>
   </div>
 </div>
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="nav-btn active" onclick="goPage('study')">
+  <button class="nav-btn active" data-page="study">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
     <span>Study</span>
   </button>
-  <button class="nav-btn" onclick="goPage('quiz-setup')">
+  <button class="nav-btn" data-page="quiz-setup">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
     <span>Quiz</span>
   </button>
-  <button class="nav-btn" onclick="goPage('progress')">
+  <button class="nav-btn" data-page="progress">
     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
     <span>Progress</span>
   </button>
@@ -913,18 +913,18 @@ let quizCatSelected = 'all';
 // Load progress
 try { seenCorrect = JSON.parse(localStorage.getItem('lid_progress') || '{}'); } catch(e) {}
 
-function saveProgress() {
+window.saveProgress = function() {
   try { localStorage.setItem('lid_progress', JSON.stringify(seenCorrect)); } catch(e) {}
 }
 
-function setLang(l) {
+window.setLang = function(l) {
   lang = l;
   document.getElementById('btn-en').classList.toggle('active', l === 'en');
   document.getElementById('btn-de').classList.toggle('active', l === 'de');
   renderStudy();
 }
 
-function goPage(p) {
+window.goPage = function(p) {
   document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('page-' + p).classList.add('active');
@@ -938,7 +938,7 @@ function goPage(p) {
 }
 
 // STUDY
-function getFiltered() {
+window.getFiltered = function() {
   let qs = QS;
   if (currentCat !== 'all') qs = qs.filter(q => q.cat === currentCat);
   if (searchTerm) {
@@ -951,7 +951,7 @@ function getFiltered() {
   return qs;
 }
 
-function renderStudy() {
+window.renderStudy = function() {
   const cats = document.getElementById('cats');
   const catDefs = [
     { id: 'all', label: 'All (' + QS.length + ')' },
@@ -1010,25 +1010,25 @@ function renderStudy() {
   }).join('');
 }
 
-function setCat(cat) {
+window.setCat = function(cat) {
   currentCat = cat;
   openCard = null;
   renderStudy();
 }
 
-function doSearch(val) {
+window.doSearch = function(val) {
   searchTerm = val;
   openCard = null;
   renderStudy();
 }
 
-function toggleCard(n) {
+window.toggleCard = function(n) {
   openCard = openCard === n ? null : n;
   renderStudy();
 }
 
 // QUIZ SETUP
-function renderQuizSetup() {
+window.renderQuizSetup = function() {
   const grid = document.getElementById('quiz-cat-options');
   const cats = [
     { id: 'all', label: 'All questions', count: QS.length },
@@ -1044,18 +1044,18 @@ function renderQuizSetup() {
   ).join('');
 }
 
-function selectQuizCat(cat) {
+window.selectQuizCat = function(cat) {
   quizCatSelected = cat;
   renderQuizSetup();
 }
 
-function selectSize(n) {
+window.selectSize = function(n) {
   quizSize = n;
   document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
   event.target.classList.add('selected');
 }
 
-function startQuiz() {
+window.startQuiz = function() {
   quizCat = quizCatSelected;
   let pool = quizCat === 'all' ? [...QS] : QS.filter(q => q.cat === quizCat);
   pool = pool.sort(() => Math.random() - 0.5);
@@ -1068,7 +1068,7 @@ function startQuiz() {
   renderQuizQuestion();
 }
 
-function renderQuizQuestion() {
+window.renderQuizQuestion = function() {
   if (quizIndex >= quizQuestions.length) { showResults(); return; }
   const q = quizQuestions[quizIndex];
   const d = q[lang];
@@ -1092,7 +1092,7 @@ function renderQuizQuestion() {
   ).join('');
 }
 
-function answerQuiz(chosen) {
+window.answerQuiz = function(chosen) {
   if (quizAnswered) return;
   quizAnswered = true;
   const q = quizQuestions[quizIndex];
@@ -1122,12 +1122,12 @@ function answerQuiz(chosen) {
   document.getElementById('q-next').classList.add('visible');
 }
 
-function nextQuestion() {
+window.nextQuestion = function() {
   quizIndex++;
   renderQuizQuestion();
 }
 
-function showResults() {
+window.showResults = function() {
   document.getElementById('q-prog-fill').style.width = '100%';
   const total = quizQuestions.length;
   const pct = Math.round((quizCorrect / total) * 100);
@@ -1153,13 +1153,13 @@ function showResults() {
   r.classList.add('show');
 }
 
-function retryQuiz() {
+window.retryQuiz = function() {
   document.getElementById('q-results').classList.remove('show');
   startQuiz();
 }
 
 // PROGRESS
-function renderProgress() {
+window.renderProgress = function() {
   const total = QS.length;
   const seen = Object.values(seenCorrect).filter(v => v === true).length;
   const pct = total > 0 ? Math.round((seen / total) * 100) : 0;
@@ -1179,7 +1179,7 @@ function renderProgress() {
   }).join('');
 }
 
-function resetProgress() {
+window.resetProgress = function() {
   if (confirm('Reset all progress?')) {
     seenCorrect = {};
     saveProgress();
@@ -1187,6 +1187,53 @@ function resetProgress() {
   }
 }
 
-// INIT
-renderStudy();
-renderQuizSetup();
+
+// INIT - wire all events via addEventListener (no inline onclick)
+document.addEventListener('DOMContentLoaded', function() {
+  var el;
+
+  el = document.getElementById('btn-en');
+  if(el) el.addEventListener('click', function(){ setLang('en'); });
+  el = document.getElementById('btn-de');
+  if(el) el.addEventListener('click', function(){ setLang('de'); });
+
+  el = document.getElementById('search-input');
+  if(el) el.addEventListener('input', function(){ doSearch(this.value); });
+
+  el = document.getElementById('start-quiz-btn');
+  if(el) el.addEventListener('click', function(){ startQuiz(); });
+
+  el = document.getElementById('q-next');
+  if(el) el.addEventListener('click', function(){ nextQuestion(); });
+
+  el = document.getElementById('retry-btn');
+  if(el) el.addEventListener('click', function(){ retryQuiz(); });
+
+  el = document.getElementById('go-quiz-setup-btn');
+  if(el) el.addEventListener('click', function(){ goPage('quiz-setup'); });
+
+  el = document.getElementById('go-study-btn');
+  if(el) el.addEventListener('click', function(){ goPage('study'); });
+
+  el = document.getElementById('reset-btn');
+  if(el) el.addEventListener('click', function(){ resetProgress(); });
+
+  document.querySelectorAll('.nav-btn[data-page]').forEach(function(btn){
+    btn.addEventListener('click', function(){ goPage(this.getAttribute('data-page')); });
+  });
+
+  document.querySelectorAll('[data-page]:not(.nav-btn)').forEach(function(btn){
+    btn.addEventListener('click', function(){ goPage(this.getAttribute('data-page')); });
+  });
+
+  document.querySelectorAll('.size-btn[data-size]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.size-btn').forEach(function(b){ b.classList.remove('selected'); });
+      this.classList.add('selected');
+      quizSize = parseInt(this.getAttribute('data-size'));
+    });
+  });
+
+  renderStudy();
+  renderQuizSetup();
+});
