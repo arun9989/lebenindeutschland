@@ -1189,7 +1189,7 @@ window.resetProgress = function() {
 
 
 // INIT - wire all events via addEventListener (no inline onclick)
-document.addEventListener('DOMContentLoaded', function() {
+function init() {
   var el;
 
   el = document.getElementById('btn-en');
@@ -1236,4 +1236,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   renderStudy();
   renderQuizSetup();
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+</script>
+</body>
+</html>
