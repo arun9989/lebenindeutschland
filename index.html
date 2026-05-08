@@ -453,6 +453,48 @@ body {
 .pass-tag.pass { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
 .pass-tag.fail { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.25); }
 
+/* WRONG ANSWERS REVIEW */
+.review-section {
+  text-align: left;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+}
+.review-heading {
+  font-family: 'Syne', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+.review-item {
+  background: var(--surface);
+  border: 1px solid rgba(248,113,113,0.2);
+  border-radius: 12px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 8px;
+}
+.review-q {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+  line-height: 1.4;
+}
+.review-wrong {
+  font-size: 0.8rem;
+  color: var(--red);
+  margin-bottom: 4px;
+}
+.review-wrong::before { content: '✗ '; }
+.review-correct {
+  font-size: 0.8rem;
+  color: var(--green);
+}
+.review-correct::before { content: '✓ '; }
+
 /* BOTTOM NAV */
 .bottom-nav {
   position: fixed;
@@ -770,6 +812,7 @@ body {
       <button class="btn-secondary" id="go-quiz-setup-btn">Choose different category</button>
       <button class="btn-secondary" id="go-study-btn">Back to study</button>
     </div>
+    <div id="r-review"></div>
   </div>
 </div>
 
@@ -1131,6 +1174,7 @@ let quizIndex = 0;
 let quizCorrect = 0;
 let quizWrong = 0;
 let quizAnswered = false;
+let wrongAnswers = [];
 let quizCat = 'all';
 let quizCatSelected = 'all';
 let shuffleEnabled = true;
@@ -1305,7 +1349,7 @@ window.startQuiz = function() {
   if (shuffleEnabled) pool = pool.sort(() => Math.random() - 0.5);
   quizQuestions = pool;
 
-  quizIndex = 0; quizCorrect = 0; quizWrong = 0;
+  quizIndex = 0; quizCorrect = 0; quizWrong = 0; wrongAnswers = [];
   document.getElementById('q-results').classList.remove('show');
   goPage('quiz');
   renderQuizQuestion();
@@ -1344,7 +1388,7 @@ window.answerQuiz = function(chosen) {
   const d = q[lang];
   const correct = d.a === chosen;
   if (correct) { quizCorrect++; seenCorrect[q.n] = true; }
-  else { quizWrong++; seenCorrect[q.n] = false; }
+  else { quizWrong++; seenCorrect[q.n] = false; wrongAnswers.push({ q, chosen }); }
   saveProgress();
   document.getElementById('q-score-c').textContent = quizCorrect;
   document.getElementById('q-score-w').textContent = quizWrong;
@@ -1395,6 +1439,25 @@ window.showResults = function() {
   document.querySelector('.quiz-opts').innerHTML = '';
   document.getElementById('q-feedback').className = 'quiz-feedback';
   document.getElementById('q-next').classList.remove('visible');
+
+  // Wrong answers review
+  const reviewEl = document.getElementById('r-review');
+  if (wrongAnswers.length === 0) {
+    reviewEl.innerHTML = '';
+  } else {
+    reviewEl.innerHTML = `<div class="review-section">
+      <div class="review-heading">✗ ${wrongAnswers.length} wrong answer${wrongAnswers.length > 1 ? 's' : ''} — review</div>
+      ${wrongAnswers.map(({ q, chosen }) => {
+        const d = q[lang];
+        return `<div class="review-item">
+          <div class="review-q">${d.q}</div>
+          <div class="review-wrong">${d.opts[chosen]}</div>
+          <div class="review-correct">${d.opts[d.a]}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
   r.classList.add('show');
 }
 
