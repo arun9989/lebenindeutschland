@@ -1457,11 +1457,13 @@ function init() {
   if(el) el.addEventListener('click', function(){ setLang('de'); });
 
   document.addEventListener('keydown', function(e) {
-    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
-      e.preventDefault();
-      setLang(lang === 'en' ? 'de' : 'en');
-    }
-  });
+    if (e.code !== 'Space') return;
+    const tag = e.target.tagName;
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    e.preventDefault();
+    e.stopPropagation();
+    setLang(lang === 'en' ? 'de' : 'en');
+  }, true);
 
   el = document.getElementById('search-input');
   if(el) el.addEventListener('input', function(){ doSearch(this.value); });
