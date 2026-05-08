@@ -1456,6 +1456,13 @@ function init() {
   el = document.getElementById('btn-de');
   if(el) el.addEventListener('click', function(){ setLang('de'); });
 
+  document.addEventListener('keydown', function(e) {
+    if (e.code === 'Space' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA' && e.target.tagName !== 'SELECT') {
+      e.preventDefault();
+      setLang(lang === 'en' ? 'de' : 'en');
+    }
+  });
+
   el = document.getElementById('search-input');
   if(el) el.addEventListener('input', function(){ doSearch(this.value); });
 
