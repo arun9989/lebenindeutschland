@@ -602,53 +602,25 @@ body {
 .size-btn:hover { border-color: var(--border2); }
 .size-btn.selected { border-color: var(--accent); background: var(--tag-bg); color: var(--accent); }
 
-/* RANGE ROW */
-.range-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-.range-btn {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
-  padding: 8px 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-  white-space: nowrap;
-}
-.range-btn:hover { border-color: var(--border2); background: var(--surface2); }
-.range-btn:active { background: var(--tag-bg); border-color: var(--accent); color: var(--accent); }
-#range-input {
-  flex: 1;
+/* RANGE DROPDOWN */
+#range-select {
+  width: 100%;
   background: var(--surface2);
   border: 1px solid var(--accent);
   border-radius: 10px;
   color: var(--accent);
   font-family: 'Syne', sans-serif;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  text-align: center;
-  padding: 8px 4px;
-  outline: none;
-  min-width: 0;
-  -moz-appearance: textfield;
-}
-#range-input::-webkit-inner-spin-button,
-#range-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-.range-presets {
-  display: flex;
-  gap: 6px;
+  padding: 10px 14px;
   margin-bottom: 1.25rem;
-  flex-wrap: wrap;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4a843' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
 }
-.range-presets .size-btn { flex: 1; min-width: 44px; }
-.range-presets .size-btn.selected { border-color: var(--accent); background: var(--tag-bg); color: var(--accent); }
 
 /* TOGGLE SWITCH */
 .toggle-row {
@@ -758,22 +730,7 @@ body {
     <div class="quiz-options-grid" id="quiz-cat-options"></div>
 
     <div class="quiz-section-label">Include questions 1 to</div>
-    <div class="range-row">
-      <button class="range-btn" onclick="adjustRange(-10)">−10</button>
-      <button class="range-btn" onclick="adjustRange(-1)">−1</button>
-      <input type="number" id="range-input" min="1" max="310" value="310"
-        oninput="setRange(parseInt(this.value)||1)">
-      <button class="range-btn" onclick="adjustRange(1)">+1</button>
-      <button class="range-btn" onclick="adjustRange(10)">+10</button>
-    </div>
-    <div class="range-presets" id="range-presets">
-      <button class="size-btn" onclick="setRange(50)">50</button>
-      <button class="size-btn" onclick="setRange(100)">100</button>
-      <button class="size-btn" onclick="setRange(150)">150</button>
-      <button class="size-btn" onclick="setRange(200)">200</button>
-      <button class="size-btn" onclick="setRange(300)">300</button>
-      <button class="size-btn" onclick="setRange(310)">All</button>
-    </div>
+    <select id="range-select" onchange="setRange(parseInt(this.value))"></select>
 
     <div class="toggle-row" onclick="toggleShuffle()">
       <div>
@@ -1316,15 +1273,16 @@ window.renderQuizSetup = function() {
     </div>`
   ).join('');
 
-  // Sync range input
-  const ri = document.getElementById('range-input');
-  if (ri) ri.value = quizRangeMax;
-
-  // Sync range preset buttons
-  document.querySelectorAll('.range-presets .size-btn').forEach(b => {
-    const v = b.textContent === 'All' ? 310 : parseInt(b.textContent);
-    b.classList.toggle('selected', v === quizRangeMax);
-  });
+  // Build range dropdown options (every 10 up to 300, then 310)
+  const rs = document.getElementById('range-select');
+  if (rs && rs.options.length === 0) {
+    for (let i = 10; i <= 300; i += 10) {
+      const o = new Option('Q1 – Q' + i + '  (' + i + ' questions)', i);
+      rs.add(o);
+    }
+    rs.add(new Option('Q1 – Q310  (All 310 questions)', 310));
+  }
+  if (rs) rs.value = quizRangeMax;
 
   // Sync shuffle toggle
   const st = document.getElementById('shuffle-toggle');
@@ -1483,18 +1441,10 @@ window.toggleShuffle = function() {
 }
 
 window.setRange = function(n) {
-  quizRangeMax = Math.max(1, Math.min(310, n || 1));
-  const ri = document.getElementById('range-input');
-  if (ri) ri.value = quizRangeMax;
-  document.querySelectorAll('.range-presets .size-btn').forEach(b => {
-    const v = b.textContent === 'All' ? 310 : parseInt(b.textContent);
-    b.classList.toggle('selected', v === quizRangeMax);
-  });
+  quizRangeMax = Math.max(10, Math.min(310, n || 10));
+  const rs = document.getElementById('range-select');
+  if (rs) rs.value = quizRangeMax;
   try { localStorage.setItem('lid_range', String(quizRangeMax)); } catch(e) {}
-}
-
-window.adjustRange = function(delta) {
-  setRange(quizRangeMax + delta);
 }
 
 // INIT - wire all events via addEventListener (no inline onclick)
