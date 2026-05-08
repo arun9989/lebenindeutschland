@@ -775,14 +775,6 @@ body {
       <button class="size-btn" onclick="setRange(310)">All</button>
     </div>
 
-    <div class="quiz-section-label">Number of questions in quiz</div>
-    <div class="quiz-size-row" id="quiz-size-row">
-      <button class="size-btn selected" data-size="10">10</button>
-      <button class="size-btn" data-size="20">20</button>
-      <button class="size-btn" data-size="33">33 (real test)</button>
-      <button class="size-btn" data-size="0">All</button>
-    </div>
-
     <div class="toggle-row" onclick="toggleShuffle()">
       <div>
         <div class="toggle-label">Shuffle questions</div>
@@ -1183,7 +1175,6 @@ let quizCorrect = 0;
 let quizWrong = 0;
 let quizAnswered = false;
 let quizCat = 'all';
-let quizSize = 10;
 let quizCatSelected = 'all';
 let shuffleEnabled = true;
 let quizRangeMax = 310;
@@ -1345,22 +1336,16 @@ window.selectQuizCat = function(cat) {
   renderQuizSetup();
 }
 
-window.selectSize = function(n) {
-  quizSize = n;
-  document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
-  event.target.classList.add('selected');
-}
 
 window.startQuiz = function() {
   quizCat = quizCatSelected;
 
-  // Build pool: filter by category, then cap at range max
   let pool;
   if (quizCat === 'all') pool = QS.filter(q => q.n <= quizRangeMax);
   else pool = QS.filter(q => q.cat === quizCat && q.n <= quizRangeMax);
 
   if (shuffleEnabled) pool = pool.sort(() => Math.random() - 0.5);
-  quizQuestions = quizSize === 0 ? pool : pool.slice(0, Math.min(quizSize, pool.length));
+  quizQuestions = pool;
 
   quizIndex = 0; quizCorrect = 0; quizWrong = 0;
   document.getElementById('q-results').classList.remove('show');
