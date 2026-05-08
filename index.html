@@ -602,6 +602,54 @@ body {
 .size-btn:hover { border-color: var(--border2); }
 .size-btn.selected { border-color: var(--accent); background: var(--tag-bg); color: var(--accent); }
 
+/* RANGE ROW */
+.range-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.range-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.range-btn:hover { border-color: var(--border2); background: var(--surface2); }
+.range-btn:active { background: var(--tag-bg); border-color: var(--accent); color: var(--accent); }
+#range-input {
+  flex: 1;
+  background: var(--surface2);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  color: var(--accent);
+  font-family: 'Syne', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 4px;
+  outline: none;
+  min-width: 0;
+  -moz-appearance: textfield;
+}
+#range-input::-webkit-inner-spin-button,
+#range-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+.range-presets {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+.range-presets .size-btn { flex: 1; min-width: 44px; }
+.range-presets .size-btn.selected { border-color: var(--accent); background: var(--tag-bg); color: var(--accent); }
+
 /* TOGGLE SWITCH */
 .toggle-row {
   display: flex;
@@ -698,13 +746,6 @@ body {
     <div class="cats" id="cats"></div>
   </div>
   <div class="results-info" id="results-info"></div>
-  <div class="study-banner hidden" id="study-banner">
-    <div class="banner-text">You've studied <strong id="banner-count">10</strong> questions — ready to quiz?</div>
-    <div class="banner-actions">
-      <button class="banner-clear" onclick="clearStudyQueue()">Clear</button>
-      <button class="banner-btn" onclick="startStudyQuiz()">Quiz now →</button>
-    </div>
-  </div>
   <div class="q-list" id="q-list"></div>
   <div class="empty hidden" id="empty">No questions found. Try a different search.</div>
 </div>
@@ -713,26 +754,39 @@ body {
 <div class="page" id="page-quiz-setup">
   <div class="quiz-start">
     <h2>Quiz yourself</h2>
-    <p>Choose a category and number of questions</p>
+    <p>Choose a category and set your range</p>
     <div class="quiz-options-grid" id="quiz-cat-options"></div>
-    <div class="quiz-section-label">Number of questions</div>
+
+    <div class="quiz-section-label">Include questions 1 to</div>
+    <div class="range-row">
+      <button class="range-btn" onclick="adjustRange(-10)">−10</button>
+      <button class="range-btn" onclick="adjustRange(-1)">−1</button>
+      <input type="number" id="range-input" min="1" max="310" value="310"
+        oninput="setRange(parseInt(this.value)||1)">
+      <button class="range-btn" onclick="adjustRange(1)">+1</button>
+      <button class="range-btn" onclick="adjustRange(10)">+10</button>
+    </div>
+    <div class="range-presets" id="range-presets">
+      <button class="size-btn" onclick="setRange(50)">50</button>
+      <button class="size-btn" onclick="setRange(100)">100</button>
+      <button class="size-btn" onclick="setRange(150)">150</button>
+      <button class="size-btn" onclick="setRange(200)">200</button>
+      <button class="size-btn" onclick="setRange(300)">300</button>
+      <button class="size-btn" onclick="setRange(310)">All</button>
+    </div>
+
+    <div class="quiz-section-label">Number of questions in quiz</div>
     <div class="quiz-size-row" id="quiz-size-row">
       <button class="size-btn selected" data-size="10">10</button>
       <button class="size-btn" data-size="20">20</button>
       <button class="size-btn" data-size="33">33 (real test)</button>
       <button class="size-btn" data-size="0">All</button>
     </div>
-    <div class="quiz-section-label">Quiz me after studying every</div>
-    <div class="quiz-size-row" id="batch-size-row">
-      <button class="size-btn" data-batch="5" onclick="setBatchSize(5)">5</button>
-      <button class="size-btn selected" data-batch="10" onclick="setBatchSize(10)">10</button>
-      <button class="size-btn" data-batch="20" onclick="setBatchSize(20)">20</button>
-      <button class="size-btn" data-batch="30" onclick="setBatchSize(30)">30</button>
-    </div>
+
     <div class="toggle-row" onclick="toggleShuffle()">
       <div>
         <div class="toggle-label">Shuffle questions</div>
-        <div class="toggle-sub">Randomise order on every quiz</div>
+        <div class="toggle-sub">Randomise order within selected range</div>
       </div>
       <button class="toggle-switch on" id="shuffle-toggle"></button>
     </div>
@@ -1132,14 +1186,12 @@ let quizCat = 'all';
 let quizSize = 10;
 let quizCatSelected = 'all';
 let shuffleEnabled = true;
-let quizBatchSize = 10;
-let studyQueue = [];
+let quizRangeMax = 310;
 
 // Load progress
 try { seenCorrect = JSON.parse(localStorage.getItem('lid_progress') || '{}'); } catch(e) {}
 try { shuffleEnabled = localStorage.getItem('lid_shuffle') !== 'false'; } catch(e) {}
-try { quizBatchSize = parseInt(localStorage.getItem('lid_batch') || '10'); } catch(e) {}
-try { studyQueue = JSON.parse(localStorage.getItem('lid_queue') || '[]'); } catch(e) {}
+try { quizRangeMax = parseInt(localStorage.getItem('lid_range') || '310'); } catch(e) {}
 
 window.saveProgress = function() {
   try { localStorage.setItem('lid_progress', JSON.stringify(seenCorrect)); } catch(e) {}
@@ -1194,12 +1246,6 @@ window.renderStudy = function() {
 
   const filtered = getFiltered();
   document.getElementById('results-info').textContent = filtered.length + ' questions' + (searchTerm ? ' matching "' + searchTerm + '"' : '');
-
-  // Study banner
-  const banner = document.getElementById('study-banner');
-  const showBanner = studyQueue.length >= quizBatchSize;
-  banner.classList.toggle('hidden', !showBanner);
-  if (showBanner) document.getElementById('banner-count').textContent = studyQueue.length;
 
   const list = document.getElementById('q-list');
   const empty = document.getElementById('empty');
@@ -1259,37 +1305,35 @@ window.doSearch = function(val) {
 
 window.toggleCard = function(n) {
   openCard = openCard === n ? null : n;
-  if (openCard === n && !studyQueue.includes(n)) {
-    studyQueue.push(n);
-    try { localStorage.setItem('lid_queue', JSON.stringify(studyQueue)); } catch(e) {}
-  }
   renderStudy();
 }
 
 // QUIZ SETUP
 window.renderQuizSetup = function() {
   const grid = document.getElementById('quiz-cat-options');
-  const studiedCount = studyQueue.length;
+  const rangeCount = QS.filter(q => q.n <= quizRangeMax).length;
   const cats = [
     { id: 'all', label: lang === 'en' ? 'All questions' : 'Alle Fragen', count: QS.length },
-    { id: 'studied', label: lang === 'en' ? 'Recently studied' : 'Kürzlich gelernt', count: studiedCount, disabled: studiedCount === 0 },
     ...Object.entries(CATEGORIES).map(([id, c]) => ({
       id, label: lang === 'en' ? c.en : c.de, count: QS.filter(q => q.cat === id).length
     }))
   ];
-  grid.innerHTML = cats.map(c => {
-    const disabled = c.disabled ? ' disabled' : '';
-    const selected = quizCatSelected === c.id ? ' selected' : '';
-    const click = c.disabled ? '' : `onclick="selectQuizCat('${c.id}')"`;
-    return `<div class="quiz-option-card${selected}${disabled}" ${click}>
+  grid.innerHTML = cats.map(c =>
+    `<div class="quiz-option-card${quizCatSelected === c.id ? ' selected' : ''}" onclick="selectQuizCat('${c.id}')">
       <span class="qoc-title">${c.label}</span>
-      <span class="qoc-count">${c.count} question${c.count !== 1 ? 's' : ''}</span>
-    </div>`;
-  }).join('');
+      <span class="qoc-count">${c.count} questions</span>
+    </div>`
+  ).join('');
 
-  // Sync batch size buttons
-  document.querySelectorAll('#batch-size-row .size-btn').forEach(b =>
-    b.classList.toggle('selected', parseInt(b.dataset.batch) === quizBatchSize));
+  // Sync range input
+  const ri = document.getElementById('range-input');
+  if (ri) ri.value = quizRangeMax;
+
+  // Sync range preset buttons
+  document.querySelectorAll('.range-presets .size-btn').forEach(b => {
+    const v = b.textContent === 'All' ? 310 : parseInt(b.textContent);
+    b.classList.toggle('selected', v === quizRangeMax);
+  });
 
   // Sync shuffle toggle
   const st = document.getElementById('shuffle-toggle');
@@ -1309,18 +1353,14 @@ window.selectSize = function(n) {
 
 window.startQuiz = function() {
   quizCat = quizCatSelected;
+
+  // Build pool: filter by category, then cap at range max
   let pool;
-  if (quizCat === 'all') pool = [...QS];
-  else if (quizCat === 'studied') pool = QS.filter(q => studyQueue.includes(q.n));
-  else pool = QS.filter(q => q.cat === quizCat);
+  if (quizCat === 'all') pool = QS.filter(q => q.n <= quizRangeMax);
+  else pool = QS.filter(q => q.cat === quizCat && q.n <= quizRangeMax);
 
   if (shuffleEnabled) pool = pool.sort(() => Math.random() - 0.5);
-  quizQuestions = (quizCat === 'studied' || quizSize === 0) ? pool : pool.slice(0, Math.min(quizSize, pool.length));
-
-  if (quizCat === 'studied') {
-    studyQueue = [];
-    try { localStorage.removeItem('lid_queue'); } catch(e) {}
-  }
+  quizQuestions = quizSize === 0 ? pool : pool.slice(0, Math.min(quizSize, pool.length));
 
   quizIndex = 0; quizCorrect = 0; quizWrong = 0;
   document.getElementById('q-results').classList.remove('show');
@@ -1457,23 +1497,19 @@ window.toggleShuffle = function() {
   try { localStorage.setItem('lid_shuffle', String(shuffleEnabled)); } catch(e) {}
 }
 
-window.setBatchSize = function(n) {
-  quizBatchSize = n;
-  document.querySelectorAll('#batch-size-row .size-btn').forEach(b =>
-    b.classList.toggle('selected', parseInt(b.dataset.batch) === n));
-  try { localStorage.setItem('lid_batch', String(n)); } catch(e) {}
-  renderStudy();
+window.setRange = function(n) {
+  quizRangeMax = Math.max(1, Math.min(310, n || 1));
+  const ri = document.getElementById('range-input');
+  if (ri) ri.value = quizRangeMax;
+  document.querySelectorAll('.range-presets .size-btn').forEach(b => {
+    const v = b.textContent === 'All' ? 310 : parseInt(b.textContent);
+    b.classList.toggle('selected', v === quizRangeMax);
+  });
+  try { localStorage.setItem('lid_range', String(quizRangeMax)); } catch(e) {}
 }
 
-window.startStudyQuiz = function() {
-  quizCatSelected = 'studied';
-  startQuiz();
-}
-
-window.clearStudyQueue = function() {
-  studyQueue = [];
-  try { localStorage.removeItem('lid_queue'); } catch(e) {}
-  renderStudy();
+window.adjustRange = function(delta) {
+  setRange(quizRangeMax + delta);
 }
 
 // INIT - wire all events via addEventListener (no inline onclick)
