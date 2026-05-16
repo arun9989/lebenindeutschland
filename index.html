@@ -1193,7 +1193,16 @@ window.setLang = function(l) {
   lang = l;
   document.getElementById('btn-en').classList.toggle('active', l === 'en');
   document.getElementById('btn-de').classList.toggle('active', l === 'de');
-  renderStudy();
+  const quizPage = document.getElementById('page-quiz');
+  if (quizPage && quizPage.classList.contains('active')) {
+    if (document.getElementById('q-results').classList.contains('show')) {
+      showResults();
+    } else {
+      renderQuizQuestion();
+    }
+  } else {
+    renderStudy();
+  }
 }
 
 window.goPage = function(p) {
